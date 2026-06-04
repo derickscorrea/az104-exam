@@ -481,6 +481,260 @@
       #main { padding: 20px 16px 80px; }
       #quiz-body { padding: 20px 16px 40px; }
     }
+  
+    /* == Multi-select & Drag-drop question types == */
+    .multi-option {
+      display:flex; align-items:flex-start; gap:12px;
+      padding:13px 16px; border-radius:var(--r);
+      border:1px solid var(--border); cursor:pointer;
+      background:var(--surface-2); font-size:14px; line-height:1.55;
+      color:var(--t1); user-select:none; transition:all .15s;
+    }
+    .multi-option:hover:not(.locked) { border-color:var(--primary); background:var(--primary-dim); }
+    .multi-option.checked { border-color:var(--primary); background:var(--primary-dim); }
+    .multi-option.checked .opt-key { background:var(--primary); border-color:var(--primary); color:#fff; }
+    .multi-option.locked { cursor:default; }
+    .multi-option.reveal-correct { border-color:var(--green); background:var(--green-dim); }
+    .multi-option.reveal-correct .opt-key { background:var(--green); border-color:var(--green); color:#fff; }
+    .multi-option.reveal-wrong { border-color:var(--red); background:var(--red-dim); }
+    .multi-option.reveal-wrong .opt-key { background:var(--red); border-color:var(--red); color:#fff; }
+
+    .multi-counter {
+      font-size:12px; color:var(--t2); font-weight:600;
+      padding:5px 12px; background:var(--surface-3);
+      border:1px solid var(--border); border-radius:20px;
+    }
+    .multi-counter.ready { border-color:var(--primary); color:var(--primary-lt); background:var(--primary-dim); }
+
+    .dnd-container { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+    @media(max-width:600px){ .dnd-container { grid-template-columns:1fr; } }
+
+    .dnd-panel {
+      background:var(--surface-2); border:1px solid var(--border);
+      border-radius:var(--r); padding:12px; min-height:120px;
+    }
+    .dnd-panel-title {
+      font-size:10px; font-weight:700; letter-spacing:1px;
+      text-transform:uppercase; color:var(--t3); margin-bottom:10px;
+    }
+    .dnd-item {
+      display:flex; align-items:center; gap:10px;
+      padding:10px 13px; border-radius:8px;
+      border:1px solid var(--border); background:var(--surface);
+      font-size:13px; line-height:1.5; color:var(--t1);
+      cursor:pointer; user-select:none; transition:all .15s;
+      margin-bottom:7px;
+    }
+    .dnd-item:last-child { margin-bottom:0; }
+    .dnd-item:hover:not(.locked) { border-color:var(--primary); background:var(--primary-dim); }
+    .dnd-item .drag-handle { color:var(--t3); font-size:12px; flex-shrink:0; }
+    .dnd-item.locked { cursor:default; }
+    .dnd-item.correct { border-color:var(--green); background:var(--green-dim); }
+    .dnd-item.incorrect { border-color:var(--red); background:var(--red-dim); }
+
+    .dnd-answer-panel {
+      background:var(--primary-dim); border:1px dashed var(--primary);
+      border-radius:var(--r); padding:12px; min-height:120px;
+    }
+    .dnd-answer-panel.locked { background:var(--surface-2); border-style:solid; border-color:var(--border); }
+    .dnd-empty {
+      color:var(--t3); font-size:12px; text-align:center;
+      padding:20px; font-style:italic;
+    }
+    .dnd-slots-info {
+      font-size:11px; color:var(--primary-lt); font-weight:600;
+      margin-bottom:8px;
+    }
+
+
+    /* ======================================================
+       LABS SECTION
+       ====================================================== */
+    .lab-domain-section { margin-bottom: 10px; }
+
+    .lab-domain-header {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 20px; background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--r-lg); cursor:pointer; user-select:none;
+      transition:border-color .15s;
+    }
+    .lab-domain-header:hover { border-color:var(--border-md); }
+    .lab-domain-header.open { border-radius:var(--r-lg) var(--r-lg) 0 0; border-bottom-color:transparent; }
+    .lab-domain-left { display:flex; align-items:center; gap:12px; }
+    .lab-domain-chevron { font-size:12px; color:var(--t3); transition:transform .2s; }
+    .lab-domain-header.open .lab-domain-chevron { transform:rotate(180deg); }
+    .lab-domain-name { font-size:15px; font-weight:700; }
+    .lab-domain-meta { font-size:12px; color:var(--t2); display:flex; align-items:center; gap:12px; }
+
+    .lab-domain-body {
+      background:var(--surface); border:1px solid var(--border);
+      border-top:none; border-radius:0 0 var(--r-lg) var(--r-lg);
+      overflow:hidden; display:none;
+    }
+    .lab-domain-body.open { display:block; }
+
+    .lab-row {
+      display:flex; align-items:center; gap:14px;
+      padding:13px 20px; border-top:1px solid var(--border);
+      cursor:pointer; transition:background .12s;
+    }
+    .lab-row:first-child { border-top:none; }
+    .lab-row:hover { background:var(--surface-2); }
+    .lab-row.completed { opacity:.75; }
+    .lab-icon { width:32px; height:32px; border-radius:8px; background:var(--surface-3); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+    .lab-icon.completed { background:var(--green-dim); }
+    .lab-name { flex:1; font-size:13px; font-weight:600; color:var(--t1); }
+    .lab-name.completed { text-decoration:line-through; color:var(--t2); }
+    .lab-meta { display:flex; align-items:center; gap:8px; flex-shrink:0; }
+    .lab-duration { font-size:11px; color:var(--t3); display:flex; align-items:center; gap:4px; }
+    .lab-actions-row { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+
+    .labs-progress-bar {
+      height:3px; background:var(--surface-3); border-radius:2px;
+      overflow:hidden; width:60px;
+    }
+    .labs-progress-fill { height:100%; background:var(--green); border-radius:2px; transition:width .4s; }
+
+    /* Lab detail */
+    .lab-detail-header {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--r-lg); padding:22px 26px; margin-bottom:16px;
+    }
+    .lab-step-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--r); margin-bottom:12px; overflow:hidden;
+    }
+    .lab-step-header {
+      display:flex; align-items:center; gap:12px;
+      padding:14px 18px; background:var(--surface-2);
+      border-bottom:1px solid var(--border);
+    }
+    .step-num {
+      width:26px; height:26px; border-radius:50%;
+      background:var(--primary); color:white;
+      display:flex; align-items:center; justify-content:center;
+      font-size:11px; font-weight:800; flex-shrink:0;
+      font-family:'JetBrains Mono',monospace;
+    }
+    .step-num.done { background:var(--green); }
+    .lab-step-body { padding:14px 18px; }
+
+    .tab-group { display:flex; gap:0; margin-bottom:12px; border-radius:8px; overflow:hidden; border:1px solid var(--border); width:fit-content; }
+    .tab-btn {
+      padding:6px 16px; font-size:12px; font-weight:700;
+      background:transparent; border:none; cursor:pointer;
+      color:var(--t3); font-family:inherit; transition:all .15s;
+    }
+    .tab-btn.active { background:var(--primary-dim); color:var(--primary-lt); }
+    .tab-btn:hover:not(.active) { color:var(--t1); background:var(--surface-3); }
+
+    .code-block {
+      background:#0A0E1A; border:1px solid var(--border);
+      border-radius:8px; padding:12px 16px;
+      font-family:'JetBrains Mono',monospace; font-size:12px;
+      color:#A8C7F8; line-height:1.7; overflow-x:auto;
+      white-space:pre; position:relative;
+    }
+    .code-block .cmd-prefix { color:var(--t3); user-select:none; }
+    .copy-btn {
+      position:absolute; top:8px; right:8px;
+      padding:4px 10px; font-size:11px; font-weight:700;
+      background:var(--surface-3); border:1px solid var(--border);
+      border-radius:5px; color:var(--t2); cursor:pointer;
+      font-family:inherit; transition:all .15s;
+    }
+    .copy-btn:hover { color:var(--t1); border-color:var(--border-md); }
+
+    .portal-step {
+      display:flex; gap:10px; align-items:flex-start;
+      padding:7px 0; border-bottom:1px solid var(--border);
+      font-size:13px; color:var(--t2); line-height:1.5;
+    }
+    .portal-step:last-child { border-bottom:none; }
+    .portal-step-num {
+      width:20px; height:20px; border-radius:50%;
+      background:var(--surface-3); display:flex; align-items:center;
+      justify-content:center; font-size:10px; font-weight:700;
+      flex-shrink:0; color:var(--t3); margin-top:1px;
+    }
+
+    .lab-section-card {
+      background:var(--surface); border:1px solid var(--border);
+      border-radius:var(--r); padding:16px 20px; margin-bottom:12px;
+    }
+    .lab-section-title {
+      font-size:10px; font-weight:700; letter-spacing:1.2px;
+      text-transform:uppercase; color:var(--t3); margin-bottom:10px;
+    }
+
+    .checklist-item {
+      display:flex; gap:10px; align-items:flex-start;
+      padding:6px 0; font-size:13px; color:var(--t2); line-height:1.5;
+    }
+    .checklist-item + .checklist-item { border-top:1px solid var(--border); }
+    .check-icon { color:var(--green); flex-shrink:0; margin-top:1px; }
+    .warn-icon  { color:var(--amber); flex-shrink:0; margin-top:1px; }
+
+    .note-box {
+      background:var(--amber-dim); border:1px solid rgba(245,158,11,0.25);
+      border-radius:8px; padding:10px 14px;
+      font-size:12px; color:var(--amber); margin-top:10px;
+    }
+    .info-box {
+      background:var(--primary-dim); border:1px solid rgba(0,120,212,0.25);
+      border-radius:8px; padding:10px 14px;
+      font-size:12px; color:var(--primary-lt); margin-top:10px;
+    }
+
+    .ms-learn-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:11px 20px; background:#0078D4; color:white;
+      border-radius:var(--r); font-size:13px; font-weight:700;
+      text-decoration:none; transition:background .15s;
+      border:none; cursor:pointer; font-family:inherit;
+    }
+    .ms-learn-btn:hover { background:#1A8ADE; }
+
+    .generate-lab-card {
+      background:var(--surface); border:1px dashed var(--border-md);
+      border-radius:var(--r-lg); padding:40px 24px;
+      text-align:center; margin-bottom:16px;
+    }
+
+    /* Multi-select & Drag-drop (preserved from previous) */
+    .multi-option {
+      display:flex; align-items:flex-start; gap:12px;
+      padding:13px 16px; border-radius:var(--r);
+      border:1px solid var(--border); cursor:pointer;
+      background:var(--surface-2); font-size:14px; line-height:1.55;
+      color:var(--t1); user-select:none; transition:all .15s;
+    }
+    .multi-option:hover:not(.locked) { border-color:var(--primary); background:var(--primary-dim); }
+    .multi-option.checked { border-color:var(--primary); background:var(--primary-dim); }
+    .multi-option.checked .opt-key { background:var(--primary); border-color:var(--primary); color:#fff; }
+    .multi-option.locked { cursor:default; }
+    .multi-option.reveal-correct { border-color:var(--green); background:var(--green-dim); }
+    .multi-option.reveal-correct .opt-key { background:var(--green); border-color:var(--green); color:#fff; }
+    .multi-option.reveal-wrong { border-color:var(--red); background:var(--red-dim); }
+    .multi-option.reveal-wrong .opt-key { background:var(--red); border-color:var(--red); color:#fff; }
+    .multi-counter { font-size:12px; color:var(--t2); font-weight:600; padding:5px 12px; background:var(--surface-3); border:1px solid var(--border); border-radius:20px; }
+    .multi-counter.ready { border-color:var(--primary); color:var(--primary-lt); background:var(--primary-dim); }
+    .dnd-container { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:20px; }
+    @media(max-width:600px){ .dnd-container { grid-template-columns:1fr; } }
+    .dnd-panel { background:var(--surface-2); border:1px solid var(--border); border-radius:var(--r); padding:12px; min-height:120px; }
+    .dnd-panel-title { font-size:10px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--t3); margin-bottom:10px; }
+    .dnd-item { display:flex; align-items:center; gap:10px; padding:10px 13px; border-radius:8px; border:1px solid var(--border); background:var(--surface); font-size:13px; line-height:1.5; color:var(--t1); cursor:pointer; user-select:none; transition:all .15s; margin-bottom:7px; }
+    .dnd-item:last-child { margin-bottom:0; }
+    .dnd-item:hover:not(.locked) { border-color:var(--primary); background:var(--primary-dim); }
+    .dnd-item .drag-handle { color:var(--t3); font-size:12px; flex-shrink:0; }
+    .dnd-item.locked { cursor:default; }
+    .dnd-item.correct { border-color:var(--green); background:var(--green-dim); }
+    .dnd-item.incorrect { border-color:var(--red); background:var(--red-dim); }
+    .dnd-answer-panel { background:var(--primary-dim); border:1px dashed var(--primary); border-radius:var(--r); padding:12px; min-height:120px; }
+    .dnd-answer-panel.locked { background:var(--surface-2); border-style:solid; border-color:var(--border); }
+    .dnd-empty { color:var(--t3); font-size:12px; text-align:center; padding:20px; font-style:italic; }
+    .dnd-slots-info { font-size:11px; color:var(--primary-lt); font-weight:600; margin-bottom:8px; }
+
   </style>
 </head>
 <body>
@@ -501,9 +755,9 @@
 <script>
 'use strict';
 // ============================================================
-// CONSTANTS
+// DOMAINS
 // ============================================================
-const DOMAINS = [
+var DOMAINS = [
   { id:'identity',   name:'Identities & Governance', full:'Manage Azure Identities & Governance', pct:'20-25%', icon:'\uD83D\uDD10' },
   { id:'storage',    name:'Storage',                  full:'Implement & Manage Storage',           pct:'15-20%', icon:'\uD83D\uDDC4' },
   { id:'compute',    name:'Compute Resources',        full:'Deploy & Manage Azure Compute',        pct:'20-25%', icon:'\u2699\uFE0F' },
@@ -511,21 +765,84 @@ const DOMAINS = [
   { id:'monitoring', name:'Monitoring & Backup',      full:'Monitor & Maintain Azure Resources',   pct:'10-15%', icon:'\uD83D\uDCCA' },
 ];
 
-const DIFFICULTIES = [
+// ============================================================
+// LABS LIST  (50 hands-on labs across all 5 domains)
+// ============================================================
+var LAB_LIST = [
+  // Identity & Governance
+  {id:'iden-01',domain:'identity',  name:'Create and manage Azure AD users and groups',              duration:30, difficulty:'easy'},
+  {id:'iden-02',domain:'identity',  name:'Configure Azure RBAC role assignments',                    duration:45, difficulty:'medium'},
+  {id:'iden-03',domain:'identity',  name:'Create and configure management groups',                   duration:20, difficulty:'easy'},
+  {id:'iden-04',domain:'identity',  name:'Implement and manage Azure Policy',                        duration:35, difficulty:'medium'},
+  {id:'iden-05',domain:'identity',  name:'Configure resource locks (CanNotDelete / ReadOnly)',       duration:20, difficulty:'easy'},
+  {id:'iden-06',domain:'identity',  name:'Apply and manage resource tags at scale',                  duration:25, difficulty:'easy'},
+  {id:'iden-07',domain:'identity',  name:'Configure Azure Blueprints',                               duration:45, difficulty:'hard'},
+  {id:'iden-08',domain:'identity',  name:'Manage Azure subscriptions and cost management',           duration:30, difficulty:'medium'},
+  {id:'iden-09',domain:'identity',  name:'Configure Azure AD Privileged Identity Management (PIM)', duration:45, difficulty:'hard'},
+  {id:'iden-10',domain:'identity',  name:'Set up Multi-Factor Authentication (MFA) policies',       duration:30, difficulty:'medium'},
+  // Storage
+  {id:'stor-01',domain:'storage',   name:'Create and configure Azure Storage accounts',              duration:30, difficulty:'easy'},
+  {id:'stor-02',domain:'storage',   name:'Configure blob storage containers and access tiers',       duration:30, difficulty:'easy'},
+  {id:'stor-03',domain:'storage',   name:'Generate and manage SAS tokens',                           duration:25, difficulty:'medium'},
+  {id:'stor-04',domain:'storage',   name:'Configure Azure Files and create file shares',             duration:30, difficulty:'medium'},
+  {id:'stor-05',domain:'storage',   name:'Set up Azure File Sync',                                   duration:45, difficulty:'hard'},
+  {id:'stor-06',domain:'storage',   name:'Configure storage replication (LRS / GRS / ZRS)',         duration:20, difficulty:'easy'},
+  {id:'stor-07',domain:'storage',   name:'Implement lifecycle management policies',                  duration:25, difficulty:'medium'},
+  {id:'stor-08',domain:'storage',   name:'Secure storage with firewalls and private endpoints',     duration:35, difficulty:'medium'},
+  {id:'stor-09',domain:'storage',   name:'Configure immutable blob storage policies',               duration:25, difficulty:'hard'},
+  {id:'stor-10',domain:'storage',   name:'Import and export data with Azure Data Box',              duration:20, difficulty:'medium'},
+  // Compute
+  {id:'comp-01',domain:'compute',   name:'Deploy and configure a Windows Virtual Machine',           duration:45, difficulty:'easy'},
+  {id:'comp-02',domain:'compute',   name:'Deploy and configure a Linux Virtual Machine',             duration:45, difficulty:'easy'},
+  {id:'comp-03',domain:'compute',   name:'Configure VM availability sets and zones',                 duration:30, difficulty:'medium'},
+  {id:'comp-04',domain:'compute',   name:'Configure Virtual Machine Scale Sets (VMSS)',              duration:45, difficulty:'medium'},
+  {id:'comp-05',domain:'compute',   name:'Deploy an Azure App Service web app',                     duration:30, difficulty:'easy'},
+  {id:'comp-06',domain:'compute',   name:'Configure App Service deployment slots and autoscaling',  duration:40, difficulty:'medium'},
+  {id:'comp-07',domain:'compute',   name:'Deploy a container to Azure Container Instances (ACI)',    duration:30, difficulty:'medium'},
+  {id:'comp-08',domain:'compute',   name:'Create and manage an Azure Kubernetes Service (AKS) cluster', duration:60, difficulty:'hard'},
+  {id:'comp-09',domain:'compute',   name:'Configure Azure VM Backup, snapshots, and restore',       duration:45, difficulty:'medium'},
+  {id:'comp-10',domain:'compute',   name:'Manage VM disks, attach data disks, and resize',          duration:30, difficulty:'easy'},
+  {id:'comp-11',domain:'compute',   name:'Configure VM extensions and custom script extension',     duration:30, difficulty:'medium'},
+  {id:'comp-12',domain:'compute',   name:'Deploy infrastructure with ARM templates and Bicep',      duration:45, difficulty:'hard'},
+  // Networking
+  {id:'net-01', domain:'networking',name:'Create and configure a Virtual Network (VNet)',            duration:30, difficulty:'easy'},
+  {id:'net-02', domain:'networking',name:'Configure Network Security Groups (NSGs) and rules',      duration:30, difficulty:'medium'},
+  {id:'net-03', domain:'networking',name:'Configure VNet peering (same region and global)',         duration:35, difficulty:'medium'},
+  {id:'net-04', domain:'networking',name:'Configure Azure DNS zones and custom records',            duration:30, difficulty:'medium'},
+  {id:'net-05', domain:'networking',name:'Deploy an Azure Load Balancer (Standard SKU)',            duration:45, difficulty:'medium'},
+  {id:'net-06', domain:'networking',name:'Configure an Application Gateway with WAF',               duration:60, difficulty:'hard'},
+  {id:'net-07', domain:'networking',name:'Set up a VPN Gateway (Point-to-Site connection)',         duration:60, difficulty:'hard'},
+  {id:'net-08', domain:'networking',name:'Configure Azure Firewall and DNAT rules',                 duration:45, difficulty:'hard'},
+  {id:'net-09', domain:'networking',name:'Configure User Defined Routes (UDR) and route tables',   duration:30, difficulty:'medium'},
+  {id:'net-10', domain:'networking',name:'Set up Azure Bastion for secure VM access',              duration:30, difficulty:'medium'},
+  {id:'net-11', domain:'networking',name:'Configure Network Watcher and flow logs',                duration:30, difficulty:'medium'},
+  {id:'net-12', domain:'networking',name:'Configure Azure NAT Gateway for outbound traffic',       duration:25, difficulty:'easy'},
+  // Monitoring & Backup
+  {id:'mon-01', domain:'monitoring',name:'Configure Azure Monitor and platform metrics',            duration:30, difficulty:'easy'},
+  {id:'mon-02', domain:'monitoring',name:'Create and configure Log Analytics workspaces',           duration:30, difficulty:'medium'},
+  {id:'mon-03', domain:'monitoring',name:'Configure metric alerts and action groups',               duration:30, difficulty:'medium'},
+  {id:'mon-04', domain:'monitoring',name:'Set up VM Insights and Connection Monitor',              duration:35, difficulty:'medium'},
+  {id:'mon-05', domain:'monitoring',name:'Configure Azure Backup vault and policies',              duration:45, difficulty:'medium'},
+  {id:'mon-06', domain:'monitoring',name:'Implement Azure Site Recovery (ASR) for VMs',           duration:60, difficulty:'hard'},
+  {id:'mon-07', domain:'monitoring',name:'Configure diagnostic settings and resource logs',        duration:20, difficulty:'easy'},
+  {id:'mon-08', domain:'monitoring',name:'Use Azure Advisor and implement cost optimisation',      duration:20, difficulty:'easy'},
+];
+
+var DIFFICULTIES = [
   { id:'easy',   label:'Easy',   desc:'Definitions & concepts' },
   { id:'medium', label:'Medium', desc:'Practical scenarios' },
   { id:'hard',   label:'Hard',   desc:'Troubleshooting & edge cases' },
 ];
 
-const TIMERS   = [{id:0,label:'Off'},{id:30,label:'30s'},{id:60,label:'60s'},{id:90,label:'90s'}];
-const Q_COUNTS = [10, 20, 30];
-const PASS_PCT = 70;
-const MAX_HIST = 60;
+var TIMERS   = [{id:0,label:'Off'},{id:30,label:'30s'},{id:60,label:'60s'},{id:90,label:'90s'}];
+var Q_COUNTS = [10, 20, 30];
+var PASS_PCT = 70;
+var MAX_HIST = 60;
 
 // ============================================================
 // STATE
 // ============================================================
-const S = {
+var S = {
   screen:  'home',
   apiKey:  lsGet('az104_key') || '',
   showKey: false,
@@ -538,9 +855,15 @@ const S = {
   },
   quiz: {
     questions:[], answers:[], flagged:new Set(),
-    current:0, timeLeft:0, timerInt:null,
-    startTime:null, endTime:null,
+    current:0, timeLeft:0, timerInt:null, startTime:null, endTime:null,
   },
+  labs: {
+    completed:  lsGet('az104_labs_done')  ? JSON.parse(lsGet('az104_labs_done'))  : [],
+    bookmarked: lsGet('az104_labs_book')  ? JSON.parse(lsGet('az104_labs_book'))  : [],
+    openDomains:lsGet('az104_labs_open')  ? JSON.parse(lsGet('az104_labs_open'))  : ['identity'],
+    activeTab:  {},
+  },
+  currentLabId: null,
   history: lsGet('az104_history') ? JSON.parse(lsGet('az104_history')) : [],
   error: null,
 };
@@ -559,26 +882,57 @@ function saveSettings() {
   lsSet('az104_exam', String(S.settings.examMode));
 }
 function saveHistory() { lsSet('az104_history', JSON.stringify(S.history)); }
+function saveLabs() {
+  lsSet('az104_labs_done', JSON.stringify(S.labs.completed));
+  lsSet('az104_labs_book', JSON.stringify(S.labs.bookmarked));
+  lsSet('az104_labs_open', JSON.stringify(S.labs.openDomains));
+}
+function getLabContent(labId)    { return lsGet('az104_lab_' + labId); }
+function setLabContent(labId, c) { lsSet('az104_lab_' + labId, c); }
+
+// ============================================================
+// ANSWER HELPERS
+// ============================================================
+function isAnswered(i) {
+  var q = S.quiz.questions[i]; var a = S.quiz.answers[i];
+  if (!q) return false;
+  var type = q.type || 'single';
+  if (type === 'single')    return a !== undefined && a !== null;
+  if (type === 'multi')     return Array.isArray(a) && a.length === (q.selectCount || 2);
+  if (type === 'drag_drop') return Array.isArray(a) && a.length === (q.selectCount || 3);
+  return false;
+}
+function isCorrect(i) {
+  var q = S.quiz.questions[i]; var a = S.quiz.answers[i];
+  if (!q || a === undefined || a === null) return false;
+  var type = q.type || 'single';
+  if (type === 'single') return a === q.correct;
+  if (type === 'multi' || type === 'drag_drop') {
+    if (!Array.isArray(a) || !Array.isArray(q.correct)) return false;
+    if (a.length !== q.correct.length) return false;
+    var sa = a.slice().sort(function(x,y){return x-y;});
+    var sc = q.correct.slice().sort(function(x,y){return x-y;});
+    for (var j=0;j<sa.length;j++){if(sa[j]!==sc[j])return false;}
+    return true;
+  }
+  return false;
+}
 
 // ============================================================
 // ROUTER
 // ============================================================
 function go(screen) { S.screen = screen; S.error = null; render(); }
-
 function goHome() {
-  if (S.screen === 'quiz') {
-    if (!confirm('Quit? Your current session will be lost.')) return;
-    killTimer();
-  }
+  if (S.screen === 'quiz') { if (!confirm('Quit? Session will be lost.')) return; killTimer(); }
   go('home');
 }
+function openLab(labId) { S.currentLabId = labId; S.screen = 'lab_detail'; render(); }
 
 function render() {
   var inQuiz = S.screen === 'quiz';
   document.getElementById('header').style.display = inQuiz ? 'none' : '';
   document.getElementById('main').style.display   = inQuiz ? 'none' : '';
   document.body.classList.toggle('in-quiz', inQuiz);
-
   var oldQuiz = document.getElementById('quiz-screen');
   if (oldQuiz) oldQuiz.remove();
 
@@ -591,648 +945,481 @@ function render() {
     return;
   }
 
+  var totalDone = S.labs.completed.length;
   document.getElementById('nav').innerHTML = [
-    {id:'home',      label:'Home',      icon:'&#127968;'},
-    {id:'history',   label:'History',   icon:'&#128203;', dot: S.history.length > 0},
-    {id:'analytics', label:'Analytics', icon:'&#128200;', dot: S.history.length > 0},
+    {id:'home',       label:'Home',       icon:'&#127968;'},
+    {id:'labs',       label:'Labs',       icon:'&#129514;', badge: totalDone + '/' + LAB_LIST.length, dot: totalDone > 0},
+    {id:'history',    label:'History',    icon:'&#128203;', dot: S.history.length > 0},
+    {id:'analytics',  label:'Analytics',  icon:'&#128200;', dot: S.history.length > 0},
   ].map(function(n) {
-    return '<button class="nav-btn ' + (S.screen===n.id?'active':'') + ' ' + (n.dot?'has-data':'') + '" onclick="go(\'' + n.id + '\')">' +
-      '<span class="nav-dot"></span>' + n.icon + ' ' + n.label + '</button>';
+    var badgeHtml = n.badge ? ' <span style="font-size:10px;background:var(--green-dim);color:var(--green);padding:1px 7px;border-radius:10px;">' + n.badge + '</span>' : '';
+    return '<button class="nav-btn ' + (S.screen===n.id||S.screen==='lab_detail'&&n.id==='labs'?'active':'') + ' ' + (n.dot?'has-data':'') + '" onclick="go(\'' + n.id + '\')">' +
+      '<span class="nav-dot"></span>' + n.icon + ' ' + n.label + badgeHtml + '</button>';
   }).join('');
 
-  var map = {home:renderHome, loading:renderLoading, results:renderResults, review:renderReview, history:renderHistory, analytics:renderAnalytics};
+  var map = {
+    home:renderHome, loading:renderLoading,
+    labs:renderLabs, lab_detail:renderLabDetail,
+    results:renderResults, review:renderReview,
+    history:renderHistory, analytics:renderAnalytics
+  };
   document.getElementById('main').innerHTML = '<div class="fade-up">' + ((map[S.screen]||renderHome)()) + '</div>';
   attachMainEvents();
+}
+
+// ============================================================
+// SHARED HELPERS
+// ============================================================
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function diffBadge(d) {
+  var map = {easy:'b-green', medium:'b-amber', hard:'b-red'};
+  return '<span class="badge ' + (map[d]||'b-gray') + '" style="font-size:10px;">' + escHtml(d) + '</span>';
 }
 
 // ============================================================
 // HOME SCREEN
 // ============================================================
 function renderHome() {
-  var s = S.settings;
-  var hasKey = !!S.apiKey;
-  var keyType = S.showKey ? 'text' : 'password';
-
+  var s = S.settings; var hasKey = !!S.apiKey;
   var domainCards = DOMAINS.map(function(d) {
     var sel = s.domains.indexOf(d.id) > -1;
     return '<div class="domain-card ' + (sel?'selected':'') + '" data-domain="' + d.id + '">' +
-      '<div class="d-icon">' + d.icon + '</div>' +
-      '<div class="d-name">' + d.name + '</div>' +
+      '<div class="d-icon">' + d.icon + '</div><div class="d-name">' + d.name + '</div>' +
       '<div class="d-pct">' + d.pct + ' of exam</div></div>';
   }).join('');
+  var diffBtns   = DIFFICULTIES.map(function(d){return '<button class="toggle-opt '+(s.difficulty===d.id?'active':'')+'" data-diff="'+d.id+'" title="'+d.desc+'">'+d.label+'</button>';}).join('');
+  var countBtns  = [10,20,30].map(function(n){return '<button class="toggle-opt '+(s.count===n?'active':'')+'" data-count="'+n+'">'+n+'</button>';}).join('');
+  var timerBtns  = TIMERS.map(function(t){return '<button class="toggle-opt '+(s.timer===t.id?'active':'')+'" data-timer="'+t.id+'">'+t.label+'</button>';}).join('');
+  var noKeyNote  = !hasKey ? '<div class="notice mb-4">&#9888;&#65039; Enter your Anthropic API key to get started. Get one at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> &mdash; stored only in your browser\'s localStorage.</div>' : '';
+  var clearBtn   = S.apiKey ? '<button class="btn btn-ghost" id="clear-key-btn" style="padding:10px 14px;flex-shrink:0;">&#10005;</button>' : '';
+  var errBox     = S.error  ? '<div class="err-box mb-3">&#10060; ' + escHtml(S.error) + '</div>' : '';
+  var summary    = s.count + ' questions &middot; ' + s.domains.length + ' domain' + (s.domains.length!==1?'s':'') + ' &middot; ' + s.difficulty + ' &middot; ' + (s.timer?s.timer+'s':'no timer') + (s.examMode?' &middot; exam mode':'');
 
-  var diffBtns = DIFFICULTIES.map(function(d) {
-    return '<button class="toggle-opt ' + (s.difficulty===d.id?'active':'') + '" data-diff="' + d.id + '" title="' + d.desc + '">' + d.label + '</button>';
-  }).join('');
-
-  var countBtns = Q_COUNTS.map(function(n) {
-    return '<button class="toggle-opt ' + (s.count===n?'active':'') + '" data-count="' + n + '">' + n + '</button>';
-  }).join('');
-
-  var timerBtns = TIMERS.map(function(t) {
-    return '<button class="toggle-opt ' + (s.timer===t.id?'active':'') + '" data-timer="' + t.id + '">' + t.label + '</button>';
-  }).join('');
-
-  var noKeyNotice = !hasKey ? '<div class="notice mb-4">&#9888;&#65039; Enter your Anthropic API key to generate questions. Get one at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> &mdash; stored only in your browser\'s localStorage, never on any server.</div>' : '';
-
-  var clearKeyBtn = S.apiKey ? '<button class="btn btn-ghost" id="clear-key-btn" style="padding:10px 14px;flex-shrink:0;" title="Clear key">&#10005;</button>' : '';
-
-  var errBox = S.error ? '<div class="err-box mb-3">&#10060; ' + escHtml(S.error) + '</div>' : '';
-
-  var timerDesc = s.timer ? s.timer + 's timer' : 'no timer';
-  var examDesc  = s.examMode ? ' &middot; exam mode' : '';
-  var summary   = s.count + ' questions &middot; ' + s.domains.length + ' domain' + (s.domains.length!==1?'s':'') + ' &middot; ' + s.difficulty + ' &middot; ' + timerDesc + examDesc;
-
-  return noKeyNotice +
+  return noKeyNote +
     '<div class="card mb-3">' +
       '<div class="sec-label">Anthropic API Key</div>' +
       '<div class="flex gap-2 mb-1">' +
-        '<input class="inp" id="key-inp" type="' + keyType + '" value="' + escHtml(S.apiKey) + '" placeholder="sk-ant-api03-..." style="flex:1;">' +
-        '<button class="btn btn-ghost" id="toggle-key-btn" style="padding:10px 14px;flex-shrink:0;">' + (S.showKey?'&#128584;':'&#128065;&#65039;') + '</button>' +
-        clearKeyBtn +
-      '</div>' +
-      '<p class="text-xs text-3">Stored locally in your browser. Safe to share this HTML file.</p>' +
+        '<input class="inp" id="key-inp" type="'+(S.showKey?'text':'password')+'" value="'+escHtml(S.apiKey)+'" placeholder="sk-ant-api03-..." style="flex:1;">' +
+        '<button class="btn btn-ghost" id="toggle-key-btn" style="padding:10px 14px;flex-shrink:0;">'+(S.showKey?'&#128584;':'&#128065;&#65039;')+'</button>'+clearBtn+
+      '</div><p class="text-xs text-3">Stored locally in your browser only.</p>' +
     '</div>' +
-
     '<div class="card mb-3">' +
-      '<div class="flex justify-between items-center mb-2">' +
-        '<div class="sec-label" style="margin:0">Exam Domains</div>' +
-        '<button class="btn btn-ghost" id="tog-all-btn" style="padding:5px 12px;font-size:12px;">' + (s.domains.length===DOMAINS.length?'Deselect all':'Select all') + '</button>' +
-      '</div>' +
-      '<div class="domain-grid mb-3">' + domainCards + '</div>' +
-      '<hr>' +
+      '<div class="flex justify-between items-center mb-2"><div class="sec-label" style="margin:0">Exam Domains</div>' +
+        '<button class="btn btn-ghost" id="tog-all-btn" style="padding:5px 12px;font-size:12px;">'+(s.domains.length===DOMAINS.length?'Deselect all':'Select all')+'</button></div>' +
+      '<div class="domain-grid mb-3">'+domainCards+'</div><hr>' +
       '<div class="flex gap-5" style="flex-wrap:wrap;">' +
-        '<div style="flex:1;min-width:160px;"><div class="sec-label">Difficulty</div><div class="toggle-group">' + diffBtns + '</div></div>' +
-        '<div style="flex:1;min-width:160px;"><div class="sec-label">Questions</div><div class="toggle-group">' + countBtns + '</div></div>' +
-      '</div>' +
-      '<hr>' +
+        '<div style="flex:1;min-width:160px;"><div class="sec-label">Difficulty</div><div class="toggle-group">'+diffBtns+'</div></div>' +
+        '<div style="flex:1;min-width:160px;"><div class="sec-label">Questions</div><div class="toggle-group">'+countBtns+'</div></div>' +
+      '</div><hr>' +
       '<div class="flex gap-5" style="flex-wrap:wrap;">' +
-        '<div style="flex:1;min-width:160px;"><div class="sec-label">Timer per question</div><div class="toggle-group">' + timerBtns + '</div></div>' +
-        '<div style="flex:1;min-width:220px;">' +
-          '<div class="sec-label">Exam simulation mode</div>' +
-          '<div class="flex items-center gap-3">' +
-            '<label class="switch"><input type="checkbox" id="exam-tog"' + (s.examMode?' checked':'') + '><span class="slider"></span></label>' +
-            '<div><div class="text-sm fw-600">No feedback during quiz</div><div class="text-xs text-3">Answers revealed only at results</div></div>' +
+        '<div style="flex:1;min-width:160px;"><div class="sec-label">Timer per question</div><div class="toggle-group">'+timerBtns+'</div></div>' +
+        '<div style="flex:1;min-width:220px;"><div class="sec-label">Exam simulation mode</div>' +
+          '<div class="flex items-center gap-3"><label class="switch"><input type="checkbox" id="exam-tog"'+(s.examMode?' checked':'')+'><span class="slider"></span></label>' +
+          '<div><div class="text-sm fw-600">No feedback during quiz</div><div class="text-xs text-3">Answers revealed only at results</div></div></div></div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="card-sm mb-3" style="border-color:rgba(0,120,212,0.3);background:rgba(0,120,212,0.05);">' +
+      '<div class="text-sm fw-600" style="color:var(--primary-lt);margin-bottom:4px;">&#127919; Question types included</div>' +
+      '<div class="text-sm text-2">Single-answer &middot; Multi-select (Select 2/3) &middot; Drag &amp; Drop &mdash; just like the real AZ-104 exam.</div>' +
+    '</div>' +
+    errBox +
+    '<div class="flex items-center gap-3">' +
+      '<button class="btn btn-primary" id="start-btn"'+(!hasKey||s.domains.length===0?' disabled':'')+'>Start exam &rarr;</button>' +
+      '<span class="text-sm text-2">'+summary+'</span>' +
+    '</div>';
+}
+
+// ============================================================
+// LABS LIST SCREEN
+// ============================================================
+function renderLabs() {
+  var totalLabs = LAB_LIST.length;
+  var doneLabs  = S.labs.completed.length;
+  var bookLabs  = S.labs.bookmarked.length;
+  var pct       = Math.round((doneLabs/totalLabs)*100);
+
+  var headerHtml =
+    '<div class="flex justify-between items-center mb-4" style="flex-wrap:wrap;gap:10px;">' +
+      '<div>' +
+        '<h1 style="font-size:20px;font-weight:800;margin-bottom:4px;">&#129514; Hands-on Labs</h1>' +
+        '<div class="text-sm text-2">' + totalLabs + ' labs across all AZ-104 domains &mdash; AI-generated step-by-step guides</div>' +
+      '</div>' +
+      '<div class="flex gap-2" style="flex-wrap:wrap;">' +
+        '<div class="stat-box" style="padding:10px 16px;text-align:center;">' +
+          '<div class="stat-num" style="font-size:18px;color:var(--green)">' + doneLabs + '</div>' +
+          '<div class="stat-lbl">Done</div>' +
+        '</div>' +
+        '<div class="stat-box" style="padding:10px 16px;text-align:center;">' +
+          '<div class="stat-num" style="font-size:18px;color:var(--amber)">' + bookLabs + '</div>' +
+          '<div class="stat-lbl">Saved</div>' +
+        '</div>' +
+        '<div class="stat-box" style="padding:10px 16px;text-align:center;">' +
+          '<div class="stat-num" style="font-size:18px;">' + pct + '%</div>' +
+          '<div class="stat-lbl">Progress</div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  if (doneLabs > 0) {
+    headerHtml += '<div class="card-sm mb-4" style="padding:12px 16px;">' +
+      '<div class="flex justify-between items-center mb-1">' +
+        '<span class="text-sm fw-600">Overall progress</span>' +
+        '<span class="text-xs font-mono text-2">' + doneLabs + ' / ' + totalLabs + '</span>' +
+      '</div>' +
+      '<div class="prog-wrap" style="height:6px;"><div class="prog-fill" style="width:' + pct + '%;background:var(--green);"></div></div>' +
+    '</div>';
+  }
+
+  // Bookmarked section
+  var bookmarked = LAB_LIST.filter(function(l){ return S.labs.bookmarked.indexOf(l.id) > -1; });
+  var bookHtml = '';
+  if (bookmarked.length > 0) {
+    var bookRows = bookmarked.map(function(lab){ return labRow(lab, true); }).join('');
+    bookHtml = '<div class="lab-domain-section mb-3">' +
+      '<div class="lab-domain-header open" data-domain-toggle="bookmarked">' +
+        '<div class="lab-domain-left">' +
+          '<span style="font-size:18px;">&#128681;</span>' +
+          '<span class="lab-domain-name">Bookmarked Labs</span>' +
+        '</div>' +
+        '<div class="lab-domain-meta">' +
+          '<span>' + bookmarked.length + ' lab' + (bookmarked.length!==1?'s':'') + '</span>' +
+          '<span class="lab-domain-chevron">&#9660;</span>' +
+        '</div>' +
+      '</div>' +
+      '<div class="lab-domain-body open" id="body-bookmarked">' + bookRows + '</div>' +
+    '</div>';
+  }
+
+  // Domain sections
+  var domainSections = DOMAINS.map(function(dom) {
+    var labs     = LAB_LIST.filter(function(l){ return l.domain === dom.id; });
+    var done     = labs.filter(function(l){ return S.labs.completed.indexOf(l.id) > -1; }).length;
+    var totalMin = labs.reduce(function(a,l){ return a + l.duration; }, 0);
+    var hrs      = Math.floor(totalMin/60); var mins = totalMin%60;
+    var timeStr  = hrs > 0 ? hrs + 'h ' + mins + 'm' : mins + 'm';
+    var isOpen   = S.labs.openDomains.indexOf(dom.id) > -1;
+    var domPct   = labs.length > 0 ? Math.round((done/labs.length)*100) : 0;
+    var rows     = labs.map(function(lab){ return labRow(lab, false); }).join('');
+
+    return '<div class="lab-domain-section mb-2">' +
+      '<div class="lab-domain-header' + (isOpen?' open':'') + '" data-domain-toggle="' + dom.id + '">' +
+        '<div class="lab-domain-left">' +
+          '<span style="font-size:20px;">' + dom.icon + '</span>' +
+          '<div>' +
+            '<div class="lab-domain-name">' + escHtml(dom.name) + '</div>' +
+            (done > 0 ? '<div style="display:flex;align-items:center;gap:8px;margin-top:3px;">' +
+              '<div class="labs-progress-bar"><div class="labs-progress-fill" style="width:'+domPct+'%"></div></div>' +
+              '<span style="font-size:10px;color:var(--green);">'+done+'/'+labs.length+'</span>' +
+            '</div>' : '') +
           '</div>' +
         '</div>' +
-      '</div>' +
-    '</div>' +
-
-    errBox +
-
-    '<div class="flex items-center gap-3">' +
-      '<button class="btn btn-primary" id="start-btn"' + (!hasKey||s.domains.length===0?' disabled':'') + '>Start exam &rarr;</button>' +
-      '<span class="text-sm text-2">' + summary + '</span>' +
-    '</div>';
-}
-
-function escHtml(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-
-// ============================================================
-// LOADING SCREEN
-// ============================================================
-function renderLoading() {
-  return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px;gap:18px;">' +
-    '<div class="spinner"></div>' +
-    '<div style="font-size:16px;font-weight:700;">Generating ' + S.settings.count + ' questions...</div>' +
-    '<div class="text-sm text-2">Claude is crafting exam-grade AZ-104 questions for you.</div>' +
-    '</div>';
-}
-
-// ============================================================
-// QUIZ SCREEN
-// ============================================================
-function renderQuiz() {
-  var q = S.quiz;
-  var question = q.questions[q.current];
-  if (!question) return '<div id="quiz-topbar"></div><div id="quiz-body"><div class="spinner"></div></div>';
-
-  var answered    = q.answers[q.current] !== undefined;
-  var userAns     = q.answers[q.current];
-  var pct         = Math.round((q.current / q.questions.length) * 100);
-  var isLast      = q.current === q.questions.length - 1;
-  var domain      = DOMAINS.find(function(d){return d.id===question.domain;}) || {icon:'',name:question.domain};
-  var isFlagged   = q.flagged.has(q.current);
-  var showFeedback= answered && !S.settings.examMode;
-  var timerOn     = S.settings.timer > 0;
-  var tl          = q.timeLeft;
-  var timerPct    = timerOn ? (tl / S.settings.timer) * 100 : 100;
-  var timerColor  = tl < 10 ? 'var(--red)' : tl < 20 ? 'var(--amber)' : 'var(--primary)';
-  var C           = 2 * Math.PI * 22;
-  var dash        = timerOn ? C - (timerPct / 100) * C : 0;
-
-  var optionsHtml = question.options.map(function(opt, i) {
-    var cls = 'option';
-    if (answered) {
-      cls += ' locked';
-      if (!S.settings.examMode) {
-        if (i === question.correct) cls += ' rev-ok';
-        if (i === userAns && userAns !== question.correct) cls += ' sel-bad';
-        if (i === userAns && userAns === question.correct) cls = 'option locked sel-ok';
-      } else {
-        if (i === userAns) cls += ' rev-ok';
-      }
-    }
-    var letter = String.fromCharCode(65 + i);
-    return '<div class="' + cls + '" data-opt="' + i + '" tabindex="' + (answered?'-1':'0') + '" role="radio">' +
-      '<div class="opt-key">' + letter + '</div><div style="flex:1">' + escHtml(opt) + '</div></div>';
-  }).join('');
-
-  var explanationHtml = '';
-  if (showFeedback) {
-    var verdict = userAns === question.correct ? '&#9989; Correct!' : '&#10060; Incorrect.';
-    var refLine = question.reference ? '<span class="ref-link">&#128218; Reference: ' + escHtml(question.reference) + '</span>' : '';
-    explanationHtml = '<div class="explanation mb-4"><strong>' + verdict + '</strong> ' + escHtml(question.explanation) + refLine + '</div>';
-  }
-
-  var timedOutHtml = (timerOn && tl <= 0 && !answered) ?
-    '<div class="err-box mb-4">&#9200; Time\'s up! This question was marked as incorrect.</div>' : '';
-
-  var timerSvg = '';
-  if (timerOn) {
-    timerSvg = '<div class="timer-wrap">' +
-      '<svg width="52" height="52" viewBox="0 0 52 52" style="transform:rotate(-90deg)">' +
-        '<circle cx="26" cy="26" r="22" fill="none" stroke="var(--surface-3)" stroke-width="3"/>' +
-        '<circle id="timer-arc" cx="26" cy="26" r="22" fill="none" stroke="' + timerColor + '" stroke-width="3" stroke-dasharray="' + C + '" stroke-dashoffset="' + dash + '" stroke-linecap="round"/>' +
-      '</svg>' +
-      '<div class="timer-num" id="timer-num" style="color:' + (tl<10?'var(--red)':'var(--t1)') + '">' + Math.max(0,tl) + '</div>' +
-    '</div>';
-  }
-
-  var domBadge = '<span class="badge b-blue">' + domain.icon + ' ' + escHtml(domain.name) + '</span>';
-  var examBadge = S.settings.examMode ? '<span class="badge b-amber">&#129514; Exam mode</span>' : '';
-  var flagBadge = isFlagged ? '<span class="badge b-amber">&#128681; Flagged</span>' : '';
-
-  var nextBtn = answered ?
-    '<button class="btn btn-primary" onclick="nextQuestion()">' + (isLast?'&#127937; Finish exam':'Next &rarr;') + '</button>' :
-    '<span class="text-sm text-3">Pick an answer to continue</span>';
-
-  var flagLabel = isFlagged ? '&#128681; Flagged' : '&#9873; Flag for review';
-
-  return '<div id="quiz-topbar">' +
-      '<div class="flex items-center justify-between mb-2" style="gap:12px;">' +
-        '<div class="flex items-center gap-2" style="flex-wrap:wrap;">' +
-          '<button class="btn btn-ghost" onclick="quitQuiz()" style="padding:7px 14px;font-size:12px;">&larr; Quit</button>' +
-          domBadge + examBadge + flagBadge +
-        '</div>' +
-        '<div class="flex items-center gap-3">' +
-          '<span class="text-sm font-mono text-2">' + (q.current+1) + ' / ' + q.questions.length + '</span>' +
-          timerSvg +
+        '<div class="lab-domain-meta">' +
+          '<span>&#9201; ' + timeStr + '</span>' +
+          '<span>' + labs.length + ' labs</span>' +
+          '<span class="lab-domain-chevron">&#9660;</span>' +
         '</div>' +
       '</div>' +
-      '<div class="prog-wrap"><div class="prog-fill" style="width:' + pct + '%"></div></div>' +
-    '</div>' +
-    '<div id="quiz-body">' +
-      '<div class="card mb-4"><p style="font-size:16px;line-height:1.75;">' + escHtml(question.question) + '</p></div>' +
-      '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">' + optionsHtml + '</div>' +
-      timedOutHtml + explanationHtml +
-      '<div class="flex justify-between items-center">' +
-        '<button class="flag-btn' + (isFlagged?' flagged':'') + '" onclick="toggleFlag()">' + flagLabel + '</button>' +
-        nextBtn +
-      '</div>' +
-    '</div>';
-}
-
-// ============================================================
-// RESULTS SCREEN
-// ============================================================
-function renderResults() {
-  var q       = S.quiz;
-  var correct = q.answers.filter(function(a,i){return a===q.questions[i]&&q.questions[i]?a===q.questions[i].correct:false;}).length;
-  // Recalculate properly
-  correct = 0;
-  for (var ri=0;ri<q.questions.length;ri++) { if (q.answers[ri]===q.questions[ri].correct) correct++; }
-  var total   = q.questions.length;
-  var score   = Math.round((correct / total) * 100);
-  var passed  = score >= PASS_PCT;
-  var dur     = (q.endTime && q.startTime) ? Math.round((q.endTime - q.startTime)/1000) : 0;
-  var mins    = Math.floor(dur/60);
-  var secs    = String(dur%60).padStart(2,'0');
-  var flagged = q.flagged.size;
-
-  var domainStats = {};
-  q.questions.forEach(function(qu, i) {
-    if (!domainStats[qu.domain]) domainStats[qu.domain] = {correct:0,total:0};
-    domainStats[qu.domain].total++;
-    if (q.answers[i] === qu.correct) domainStats[qu.domain].correct++;
-  });
-
-  var weakDomains = Object.keys(domainStats).filter(function(id) {
-    var s = domainStats[id];
-    return Math.round(s.correct/s.total*100) < 60;
-  }).map(function(id){return (DOMAINS.find(function(d){return d.id===id;})||{name:id}).name;});
-
-  var scoreColor = score>=80?'var(--green)':score>=PASS_PCT?'var(--primary-lt)':'var(--red)';
-  var passLabel = passed ? '&#10003; Passing score' : '&#10005; Below passing score (' + PASS_PCT + '% required)';
-
-  var bars = Object.keys(domainStats).map(function(domId) {
-    var stat = domainStats[domId];
-    var dom  = DOMAINS.find(function(d){return d.id===domId;}) || {icon:'',name:domId};
-    var pct  = Math.round((stat.correct/stat.total)*100);
-    var col  = pct>=80?'var(--green)':pct>=60?'var(--primary-lt)':'var(--red)';
-    return '<div class="bar-row">' +
-      '<div class="bar-label">' + dom.icon + ' ' + escHtml(dom.name) + '</div>' +
-      '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:' + col + '"></div></div>' +
-      '<div class="bar-pct" style="color:' + col + '">' + pct + '%</div>' +
+      '<div class="lab-domain-body' + (isOpen?' open':'') + '" id="body-' + dom.id + '">' + rows + '</div>' +
     '</div>';
   }).join('');
 
-  var weakBox = weakDomains.length > 0 ?
-    '<div class="card-sm" style="border-color:rgba(245,158,11,0.25);background:var(--amber-dim);">' +
-      '<div class="text-sm fw-700" style="color:var(--amber);margin-bottom:4px;">&#128161; Study recommendations</div>' +
-      '<div class="text-sm text-2">Focus on: <strong style="color:var(--t1)">' + escHtml(weakDomains.join(', ')) + '</strong> &mdash; scored below 60%.</div>' +
-    '</div>' : '';
+  var msLearnNote =
+    '<div class="card-sm mt-4" style="border-color:rgba(0,120,212,0.25);background:rgba(0,120,212,0.05);">' +
+      '<div class="flex items-center justify-between" style="flex-wrap:wrap;gap:12px;">' +
+        '<div>' +
+          '<div class="text-sm fw-600" style="color:var(--primary-lt);margin-bottom:3px;">&#9729;&#65039; Need a real Azure environment?</div>' +
+          '<div class="text-sm text-2">Use Microsoft Learn\'s free sandbox to practice these labs on real Azure resources.</div>' +
+        '</div>' +
+        '<a href="https://learn.microsoft.com/en-us/training/browse/?products=azure&roles=administrator" target="_blank" class="ms-learn-btn" style="text-decoration:none;">Open MS Learn &rarr;</a>' +
+      '</div>' +
+    '</div>';
 
-  var flagBox = flagged > 0 ?
-    '<div class="card-sm mb-3 flex items-center justify-between" style="gap:12px;">' +
-      '<span class="text-sm">&#128681; You flagged <strong>' + flagged + '</strong> question' + (flagged!==1?'s':'') + ' for review.</span>' +
-      '<button class="btn btn-ghost" onclick="go(\'review\')" style="font-size:12px;padding:6px 12px;flex-shrink:0;">Review &rarr;</button>' +
-    '</div>' : '';
+  return headerHtml + bookHtml + domainSections + msLearnNote;
+}
 
-  return '<div class="flex justify-between items-center mb-4" style="flex-wrap:wrap;gap:10px;">' +
-    '<h1 style="font-size:20px;font-weight:800;">Exam Results</h1>' +
-    '<div class="flex gap-2" style="flex-wrap:wrap;">' +
-      '<button class="btn btn-ghost" onclick="go(\'review\')" style="font-size:12px;padding:8px 14px;">Review answers</button>' +
-      '<button class="btn btn-ghost" onclick="retryExam()" style="font-size:12px;padding:8px 14px;">&#128260; Retry same</button>' +
-      '<button class="btn btn-ghost" onclick="go(\'home\')" style="font-size:12px;padding:8px 14px;">&larr; New session</button>' +
-    '</div></div>' +
+function labRow(lab, compact) {
+  var done  = S.labs.completed.indexOf(lab.id) > -1;
+  var saved = S.labs.bookmarked.indexOf(lab.id) > -1;
+  var dom   = DOMAINS.find(function(d){return d.id===lab.domain;}) || {icon:''};
+  var hasContent = !!getLabContent(lab.id);
 
-    '<div class="card mb-3" style="text-align:center;padding:40px 24px;">' +
-      '<div style="font-size:80px;font-weight:800;font-family:\'JetBrains Mono\',monospace;line-height:1;color:' + scoreColor + ';">' + score + '%</div>' +
-      '<div class="text-sm text-2" style="margin:10px 0 18px;">' + (passed?'&#127881; You passed! Well done.':'&#128218; Keep studying &mdash; aim for ' + PASS_PCT + '%+') + '</div>' +
-      '<span class="badge ' + (passed?'b-green':'b-red') + '" style="font-size:13px;padding:6px 18px;">' + passLabel + '</span>' +
+  return '<div class="lab-row' + (done?' completed':'') + '" onclick="openLab(\'' + lab.id + '\')">' +
+    '<div class="lab-icon' + (done?' completed':'') + '">' + (done?'&#9989;':dom.icon) + '</div>' +
+    '<div class="lab-name' + (done?' completed':'') + '">' + escHtml(lab.name) + '</div>' +
+    '<div class="lab-meta">' +
+      (hasContent ? '<span class="badge b-blue" style="font-size:10px;">&#9998; Generated</span>' : '') +
+      diffBadge(lab.difficulty) +
+      '<span class="lab-duration">&#9201; ' + lab.duration + 'm</span>' +
     '</div>' +
-
-    '<div class="stats-row mb-3">' +
-      '<div class="stat-box"><div class="stat-num" style="color:var(--green)">' + correct + '</div><div class="stat-lbl">Correct</div></div>' +
-      '<div class="stat-box"><div class="stat-num" style="color:var(--red)">' + (total-correct) + '</div><div class="stat-lbl">Incorrect</div></div>' +
-      '<div class="stat-box"><div class="stat-num">' + total + '</div><div class="stat-lbl">Total</div></div>' +
-      '<div class="stat-box"><div class="stat-num text-2">' + mins + 'm ' + secs + 's</div><div class="stat-lbl">Time</div></div>' +
+    '<div class="lab-actions-row">' +
+      '<button onclick="event.stopPropagation();toggleBookmark(\'' + lab.id + '\')" ' +
+        'title="' + (saved?'Remove bookmark':'Bookmark') + '" ' +
+        'style="background:none;border:none;cursor:pointer;font-size:14px;padding:4px;color:' + (saved?'var(--amber)':'var(--t3)') + '">&#128278;</button>' +
+      '<button onclick="event.stopPropagation();toggleDone(\'' + lab.id + '\')" ' +
+        'title="' + (done?'Mark incomplete':'Mark complete') + '" ' +
+        'style="background:none;border:none;cursor:pointer;font-size:14px;padding:4px;color:' + (done?'var(--green)':'var(--t3)') + '">&#9989;</button>' +
     '</div>' +
-
-    flagBox +
-
-    '<div class="card mb-3"><div class="sec-label">Domain Breakdown</div><div class="bar-wrap">' + bars + '</div></div>' +
-    weakBox;
+  '</div>';
 }
 
 // ============================================================
-// REVIEW SCREEN
+// LAB DETAIL SCREEN
 // ============================================================
-function renderReview() {
-  var q = S.quiz;
-  var items = q.questions.map(function(question, i) {
-    var userAns = q.answers[i];
-    var ok      = userAns === question.correct;
-    var flagged = q.flagged.has(i);
-    var dom     = DOMAINS.find(function(d){return d.id===question.domain;}) || {icon:'',name:question.domain};
+function renderLabDetail() {
+  var lab     = LAB_LIST.find(function(l){ return l.id === S.currentLabId; });
+  if (!lab) return '<button class="btn btn-ghost" onclick="go(\'labs\')">&larr; Back to Labs</button><div class="empty"><div class="empty-text">Lab not found.</div></div>';
 
-    var opts = question.options.map(function(opt, oi) {
-      var isCorrect = oi === question.correct;
-      var isUser    = oi === userAns;
-      var border='var(--border)', bg='transparent', color='var(--t2)', label='';
-      if (isCorrect) { border='var(--green)'; bg='var(--green-dim)'; color='var(--green)'; label='&larr; correct answer'; }
-      if (isUser && !ok) { border='var(--red)'; bg='var(--red-dim)'; color='var(--red)'; label='&larr; your answer'; }
-      if (isUser && ok)  { border='var(--green)'; bg='var(--green-dim)'; color='var(--green)'; }
-      return '<div style="padding:9px 13px;border-radius:8px;border:1px solid ' + border + ';background:' + bg + ';font-size:13px;color:' + color + ';display:flex;justify-content:space-between;gap:8px;">' +
-        '<span><strong style="font-family:\'JetBrains Mono\',monospace;">' + String.fromCharCode(65+oi) + '.</strong> ' + escHtml(opt) + '</span>' +
-        (label ? '<span style="opacity:.7;white-space:nowrap;font-size:11px;">' + label + '</span>' : '') +
+  var done    = S.labs.completed.indexOf(lab.id) > -1;
+  var saved   = S.labs.bookmarked.indexOf(lab.id) > -1;
+  var dom     = DOMAINS.find(function(d){return d.id===lab.domain;}) || {icon:'',name:lab.domain};
+  var content = getLabContent(lab.id);
+  var parsed  = null;
+  if (content) { try { parsed = JSON.parse(content); } catch(e){ parsed = null; } }
+
+  var topBar =
+    '<div class="flex justify-between items-center mb-4" style="flex-wrap:wrap;gap:10px;">' +
+      '<button class="btn btn-ghost" onclick="go(\'labs\')" style="font-size:12px;padding:8px 14px;">&larr; Back to Labs</button>' +
+      '<div class="flex gap-2">' +
+        '<button class="btn btn-ghost" id="lab-book-btn" style="font-size:12px;padding:8px 14px;color:' + (saved?'var(--amber)':'') + '">' +
+          (saved?'&#128281; Saved':'&#128278; Save') + '</button>' +
+        '<button class="btn ' + (done?'btn-ghost':'btn-primary') + '" id="lab-done-btn" style="font-size:12px;padding:8px 14px;">' +
+          (done?'&#9989; Completed':'Mark complete') + '</button>' +
+      '</div>' +
+    '</div>';
+
+  var header =
+    '<div class="lab-detail-header mb-4">' +
+      '<div class="flex items-center gap-3 mb-3" style="flex-wrap:wrap;">' +
+        '<span class="badge b-blue">' + dom.icon + ' ' + escHtml(dom.name) + '</span>' +
+        diffBadge(lab.difficulty) +
+        '<span class="badge b-gray">&#9201; ' + lab.duration + ' min</span>' +
+        (done?'<span class="badge b-green">&#9989; Completed</span>':'') +
+      '</div>' +
+      '<h1 style="font-size:18px;font-weight:800;line-height:1.4;">' + escHtml(lab.name) + '</h1>' +
+    '</div>';
+
+  if (!parsed) {
+    // Not yet generated
+    var generateCard =
+      '<div class="generate-lab-card">' +
+        '<div style="font-size:40px;margin-bottom:14px;">&#129514;</div>' +
+        '<div style="font-size:16px;font-weight:700;margin-bottom:8px;">Generate Lab Guide</div>' +
+        '<div class="text-sm text-2" style="max-width:400px;margin:0 auto 20px;">Claude will generate a complete step-by-step lab guide with portal instructions, Azure CLI commands, validation checks, and cleanup steps.</div>' +
+        (!S.apiKey ?
+          '<div class="err-box" style="max-width:400px;margin:0 auto 16px;">API key required. Set it on the Home screen.</div>' :
+          '<button class="btn btn-primary" id="gen-lab-btn" style="font-size:14px;padding:12px 28px;">&#9889; Generate Lab Guide</button>'
+        ) +
+      '</div>';
+
+    var prereqList =
+      '<div class="lab-section-card">' +
+        '<div class="lab-section-title">Typical prerequisites</div>' +
+        '<div class="checklist-item"><span class="warn-icon">&#9432;</span><span>An active Azure subscription (free trial or pay-as-you-go)</span></div>' +
+        '<div class="checklist-item"><span class="warn-icon">&#9432;</span><span>Azure CLI installed locally, or use Azure Cloud Shell in the portal</span></div>' +
+        '<div class="checklist-item"><span class="warn-icon">&#9432;</span><span>Contributor or Owner role on the subscription</span></div>' +
+      '</div>' +
+      '<div class="info-box" style="margin-top:0;">&#9729;&#65039; <strong>Free practice:</strong> Use <a href="https://learn.microsoft.com/en-us/training/browse/?products=azure&roles=administrator" target="_blank" style="color:var(--primary-lt);">Microsoft Learn free sandboxes</a> &mdash; no Azure subscription needed.</div>';
+
+    return topBar + header + generateCard + prereqList;
+  }
+
+  // Render generated content
+  return topBar + header + renderParsedLab(parsed);
+}
+
+function renderParsedLab(p) {
+  var html = '';
+
+  // Objective + scenario
+  if (p.objective || p.scenario) {
+    html += '<div class="lab-section-card">';
+    if (p.objective) html += '<div class="lab-section-title">Objective</div><p style="font-size:14px;color:var(--t1);line-height:1.7;margin-bottom:' + (p.scenario?'12px':'0') + ';">' + escHtml(p.objective) + '</p>';
+    if (p.scenario)  html += '<div class="lab-section-title" style="margin-top:' + (p.objective?'8px':'0') + '">Scenario</div><p style="font-size:13px;color:var(--t2);line-height:1.65;">' + escHtml(p.scenario) + '</p>';
+    html += '</div>';
+  }
+
+  // Prerequisites
+  if (p.prerequisites && p.prerequisites.length) {
+    html += '<div class="lab-section-card"><div class="lab-section-title">Prerequisites</div>';
+    p.prerequisites.forEach(function(item) {
+      html += '<div class="checklist-item"><span class="warn-icon">&#9432;</span><span>' + escHtml(item) + '</span></div>';
+    });
+    html += '</div>';
+  }
+
+  // Steps
+  if (p.steps && p.steps.length) {
+    html += '<div class="sec-label" style="margin-bottom:10px;">Steps</div>';
+    p.steps.forEach(function(step, idx) {
+      var tabId = 'step-' + idx;
+      var activeTab = (S.labs.activeTab[tabId] || 'portal');
+      var hasCli     = !!(step.cli && step.cli.length > 2);
+      var hasPortal  = !!(step.portal && step.portal.length);
+
+      var tabHtml = '';
+      if (hasPortal && hasCli) {
+        tabHtml = '<div class="tab-group">' +
+          '<button class="tab-btn' + (activeTab==='portal'?' active':'') + '" onclick="setLabTab(\'' + tabId + '\',\'portal\')" style="font-size:11px;padding:5px 12px;">&#128438; Portal</button>' +
+          '<button class="tab-btn' + (activeTab==='cli'?' active':'') + '" onclick="setLabTab(\'' + tabId + '\',\'cli\')" style="font-size:11px;padding:5px 12px;">&#9112; Azure CLI</button>' +
         '</div>';
-    }).join('');
+      }
 
-    var refLine = question.reference ? '<span class="ref-link">&#128218; ' + escHtml(question.reference) + '</span>' : '';
+      var portalHtml = '';
+      if (hasPortal) {
+        var steps = Array.isArray(step.portal) ? step.portal : [step.portal];
+        portalHtml = '<div id="tab-' + tabId + '-portal"' + (hasCli&&activeTab!=='portal'?' style="display:none"':'') + '>';
+        steps.forEach(function(s, si) {
+          portalHtml += '<div class="portal-step">' +
+            '<div class="portal-step-num">' + (si+1) + '</div>' +
+            '<div>' + escHtml(String(s)) + '</div>' +
+          '</div>';
+        });
+        portalHtml += '</div>';
+      }
 
-    return '<div style="padding:20px 24px;' + (i>0?'border-top:1px solid var(--border)':'') + '">' +
-      '<div class="flex items-center justify-between mb-2" style="gap:8px;flex-wrap:wrap;">' +
-        '<div class="flex items-center gap-2">' +
-          '<span class="badge ' + (ok?'b-green':'b-red') + '">' + (ok?'&#10003; Correct':'&#10005; Incorrect') + '</span>' +
-          '<span class="badge b-gray">' + dom.icon + ' ' + escHtml(dom.name) + '</span>' +
-          (flagged?'<span class="badge b-amber">&#128681;</span>':'') +
+      var cliHtml = '';
+      if (hasCli) {
+        var cliId = 'cli-' + idx;
+        cliHtml = '<div id="tab-' + tabId + '-cli"' + (hasPortal&&activeTab!=='cli'?' style="display:none"':'') + '>' +
+          '<div class="code-block" style="position:relative;">' +
+            '<button class="copy-btn" onclick="copyCode(\'' + cliId + '\')">Copy</button>' +
+            '<span id="' + cliId + '">' + escHtml(step.cli) + '</span>' +
+          '</div>' +
+        '</div>';
+      }
+
+      var noteHtml = '';
+      if (step.note) noteHtml = '<div class="note-box">&#9888;&#65039; ' + escHtml(step.note) + '</div>';
+
+      html += '<div class="lab-step-card">' +
+        '<div class="lab-step-header">' +
+          '<div class="step-num">' + (idx+1) + '</div>' +
+          '<div>' +
+            '<div style="font-size:13px;font-weight:700;">' + escHtml(step.title) + '</div>' +
+            (step.description ? '<div style="font-size:12px;color:var(--t2);margin-top:2px;">' + escHtml(step.description) + '</div>' : '') +
+          '</div>' +
         '</div>' +
-        '<span class="text-xs font-mono text-3">Q' + (i+1) + ' of ' + q.questions.length + '</span>' +
-      '</div>' +
-      '<p style="font-size:14px;line-height:1.7;margin-bottom:12px;">' + escHtml(question.question) + '</p>' +
-      '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">' + opts + '</div>' +
-      '<div class="explanation">' + escHtml(question.explanation) + refLine + '</div>' +
-    '</div>';
-  }).join('');
-
-  return '<div class="flex justify-between items-center mb-4">' +
-    '<h1 style="font-size:20px;font-weight:800;">Answer Review</h1>' +
-    '<button class="btn btn-ghost" onclick="go(\'results\')" style="font-size:12px;padding:8px 14px;">&larr; Back to results</button>' +
-    '</div>' +
-    '<div class="card" style="padding:0;overflow:hidden;">' + items + '</div>';
-}
-
-// ============================================================
-// HISTORY SCREEN
-// ============================================================
-function renderHistory() {
-  var h = S.history;
-  if (!h.length) return '<h1 style="font-size:20px;font-weight:800;margin-bottom:24px;">Session History</h1>' +
-    '<div class="empty"><div class="empty-icon">&#128203;</div><div class="empty-text">No sessions yet.<br>Complete your first exam to see history here.</div></div>';
-
-  var items = h.slice().reverse().map(function(s) {
-    var passed  = s.score >= PASS_PCT;
-    var d       = new Date(s.date);
-    var dateStr = d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'});
-    var timeStr = d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-    var doms    = (s.domains||[]).map(function(id){return (DOMAINS.find(function(x){return x.id===id;})||{name:id}).name;}).join(', ');
-    var durSec  = s.duration ? Math.round(s.duration/1000) : 0;
-    var durStr  = durSec ? Math.floor(durSec/60) + 'm ' + String(durSec%60).padStart(2,'0') + 's' : '--';
-    var examTag = s.examMode ? '<span class="badge b-purple" style="font-size:10px;">Exam mode</span>' : '';
-
-    return '<div class="h-item">' +
-      '<div class="h-score-box" style="background:' + (passed?'var(--green-dim)':'var(--red-dim)') + '">' +
-        '<span class="h-score-num" style="color:' + (passed?'var(--green)':'var(--red)') + '">' + s.score + '%</span>' +
-      '</div>' +
-      '<div style="flex:1;min-width:0;">' +
-        '<div class="flex items-center gap-2 mb-1">' +
-          '<span class="badge ' + (passed?'b-green':'b-red') + '" style="font-size:10px;">' + (passed?'Pass':'Fail') + '</span>' +
-          '<span class="badge b-gray" style="font-size:10px;">' + escHtml(s.difficulty||'medium') + '</span>' +
-          examTag +
-          '<span class="badge b-gray" style="font-size:10px;">&#9201; ' + durStr + '</span>' +
-        '</div>' +
-        '<div class="text-sm text-2 truncate">' + escHtml(doms) + '</div>' +
-      '</div>' +
-      '<div style="text-align:right;flex-shrink:0;">' +
-        '<div class="text-sm fw-700">' + s.correct + '/' + s.total + '</div>' +
-        '<div class="text-xs text-3">' + dateStr + '</div>' +
-        '<div class="text-xs text-3">' + timeStr + '</div>' +
-      '</div>' +
-    '</div>';
-  }).join('');
-
-  return '<div class="flex justify-between items-center mb-4">' +
-    '<h1 style="font-size:20px;font-weight:800;">Session History <span class="badge b-gray" style="font-size:12px;">' + h.length + '</span></h1>' +
-    '<button class="btn btn-danger" id="clear-hist-btn" style="font-size:12px;padding:8px 14px;">&#128465; Clear all</button>' +
-    '</div>' +
-    '<div style="display:flex;flex-direction:column;gap:8px;">' + items + '</div>';
-}
-
-// ============================================================
-// ANALYTICS SCREEN
-// ============================================================
-function renderAnalytics() {
-  var h = S.history;
-  if (!h.length) return '<h1 style="font-size:20px;font-weight:800;margin-bottom:24px;">Analytics</h1>' +
-    '<div class="empty"><div class="empty-icon">&#128200;</div><div class="empty-text">No data yet.<br>Complete some practice sessions first.</div></div>';
-
-  var total    = h.length;
-  var avgScore = Math.round(h.reduce(function(a,b){return a+b.score;},0)/total);
-  var passRate = Math.round(h.filter(function(s){return s.score>=PASS_PCT;}).length/total*100);
-  var best     = Math.max.apply(Math, h.map(function(s){return s.score;}));
-  var last     = h[h.length-1];
-  var prev     = h.length > 1 ? h[h.length-2] : null;
-  var trend    = prev ? last.score - prev.score : 0;
-  var trendStr = (trend>0?'+':'') + trend + '%';
-
-  var domPerf = {};
-  DOMAINS.forEach(function(d){domPerf[d.id]={correct:0,total:0};});
-  h.forEach(function(s) {
-    if (!s.domainBreakdown) return;
-    Object.keys(s.domainBreakdown).forEach(function(id) {
-      var stat = s.domainBreakdown[id];
-      if (domPerf[id]) { domPerf[id].correct+=stat.correct; domPerf[id].total+=stat.total; }
+        '<div class="lab-step-body">' + tabHtml + portalHtml + cliHtml + noteHtml + '</div>' +
+      '</div>';
     });
-  });
+  }
 
-  var recent   = h.slice(-15);
-  var maxScore = Math.max.apply(Math, recent.map(function(s){return s.score;}));
-  var totalQs  = h.reduce(function(a,b){return a+(b.total||0);},0);
-
-  var sparkBars = recent.map(function(s, i) {
-    var passed = s.score >= PASS_PCT;
-    var hPx    = Math.max(6, Math.round((s.score/Math.max(maxScore,1))*100*0.6));
-    var op     = 0.3 + (i/recent.length)*0.7;
-    return '<div class="spark-bar" title="' + s.score + '% - ' + new Date(s.date).toLocaleDateString() + '" ' +
-      'style="height:' + hPx + 'px;background:' + (passed?'var(--primary)':'var(--red)') + ';opacity:' + op.toFixed(2) + ';"></div>';
-  }).join('');
-
-  var domBars = DOMAINS.map(function(d) {
-    var stat = domPerf[d.id];
-    if (!stat || !stat.total) return '<div class="bar-row"><div class="bar-label">' + d.icon + ' ' + escHtml(d.name) + '</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--t3)"></div></div><div class="bar-pct text-3">--</div></div>';
-    var pct = Math.round((stat.correct/stat.total)*100);
-    var col = pct>=80?'var(--green)':pct>=60?'var(--primary-lt)':'var(--red)';
-    return '<div class="bar-row"><div class="bar-label">' + d.icon + ' ' + escHtml(d.name) + '</div><div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;background:' + col + '"></div></div><div class="bar-pct" style="color:' + col + '">' + pct + '%</div></div>';
-  }).join('');
-
-  return '<h1 style="font-size:20px;font-weight:800;margin-bottom:24px;">Analytics</h1>' +
-
-    '<div class="stats-row mb-3">' +
-      '<div class="stat-box"><div class="stat-num">' + total + '</div><div class="stat-lbl">Sessions</div></div>' +
-      '<div class="stat-box"><div class="stat-num" style="color:' + (avgScore>=PASS_PCT?'var(--green)':'var(--amber)') + '">' + avgScore + '%</div><div class="stat-lbl">Avg Score</div></div>' +
-      '<div class="stat-box"><div class="stat-num">' + passRate + '%</div><div class="stat-lbl">Pass Rate</div></div>' +
-      '<div class="stat-box"><div class="stat-num" style="color:' + (trend>0?'var(--green)':trend<0?'var(--red)':'var(--t2)') + '">' + escHtml(trendStr) + '</div><div class="stat-lbl">Trend</div></div>' +
-    '</div>' +
-
-    '<div class="card mb-3">' +
-      '<div class="sec-label">Score history (last ' + recent.length + ' sessions)</div>' +
-      '<div class="spark-wrap">' + sparkBars + '</div>' +
-      '<div style="display:flex;justify-content:space-between;margin-top:6px;">' +
-        '<span class="text-xs text-3">Oldest</span>' +
-        '<span class="text-xs text-3">Latest &rarr; ' + last.score + '%</span>' +
-      '</div>' +
-    '</div>' +
-
-    '<div class="card mb-3">' +
-      '<div class="sec-label">Domain Performance (all time &middot; ' + totalQs + ' questions)</div>' +
-      '<div class="bar-wrap">' + domBars + '</div>' +
-    '</div>' +
-
-    '<div class="card-sm flex items-center justify-between gap-3" style="flex-wrap:wrap;">' +
-      '<span class="text-sm text-2">All-time best: <strong style="color:var(--t1)">' + best + '%</strong> &middot; Total questions: <strong style="color:var(--t1)">' + totalQs + '</strong></span>' +
-      '<button class="btn btn-danger" id="clear-hist-btn2" style="font-size:12px;padding:7px 14px;">&#128465; Reset data</button>' +
-    '</div>';
-}
-
-// ============================================================
-// EVENT ATTACHMENT
-// ============================================================
-function attachMainEvents() {
-  var keyInp = document.getElementById('key-inp');
-  if (keyInp) keyInp.addEventListener('input', function(e){S.apiKey=e.target.value.trim();saveSettings();});
-
-  var toggleKeyBtn = document.getElementById('toggle-key-btn');
-  if (toggleKeyBtn) toggleKeyBtn.addEventListener('click', function(){S.showKey=!S.showKey;render();});
-
-  var clearKeyBtn = document.getElementById('clear-key-btn');
-  if (clearKeyBtn) clearKeyBtn.addEventListener('click', function(){S.apiKey='';S.showKey=false;saveSettings();render();});
-
-  var togAll = document.getElementById('tog-all-btn');
-  if (togAll) togAll.addEventListener('click', function(){
-    S.settings.domains = S.settings.domains.length===DOMAINS.length ? [] : DOMAINS.map(function(d){return d.id;});
-    saveSettings(); render();
-  });
-
-  document.querySelectorAll('.domain-card[data-domain]').forEach(function(el) {
-    el.addEventListener('click', function(){
-      var id = el.dataset.domain;
-      var idx = S.settings.domains.indexOf(id);
-      if (idx > -1) S.settings.domains.splice(idx,1); else S.settings.domains.push(id);
-      saveSettings(); render();
+  // Validation
+  if (p.validation && p.validation.length) {
+    html += '<div class="lab-section-card"><div class="lab-section-title">&#10003; Validation checks</div>';
+    p.validation.forEach(function(item) {
+      html += '<div class="checklist-item"><span class="check-icon">&#10003;</span><span>' + escHtml(item) + '</span></div>';
     });
-  });
+    html += '</div>';
+  }
 
-  document.querySelectorAll('[data-diff]').forEach(function(el){
-    el.addEventListener('click',function(){S.settings.difficulty=el.dataset.diff;saveSettings();render();});
-  });
-  document.querySelectorAll('[data-count]').forEach(function(el){
-    el.addEventListener('click',function(){S.settings.count=parseInt(el.dataset.count);saveSettings();render();});
-  });
-  document.querySelectorAll('[data-timer]').forEach(function(el){
-    el.addEventListener('click',function(){S.settings.timer=parseInt(el.dataset.timer);saveSettings();render();});
-  });
-
-  var examTog = document.getElementById('exam-tog');
-  if (examTog) examTog.addEventListener('change',function(){S.settings.examMode=examTog.checked;saveSettings();});
-
-  var startBtn = document.getElementById('start-btn');
-  if (startBtn) startBtn.addEventListener('click', startQuiz);
-
-  ['clear-hist-btn','clear-hist-btn2'].forEach(function(id){
-    var btn = document.getElementById(id);
-    if (btn) btn.addEventListener('click',function(){
-      if (confirm('Clear all history and analytics data? This cannot be undone.')){S.history=[];saveHistory();render();}
+  // Cleanup
+  if (p.cleanup && p.cleanup.length) {
+    html += '<div class="lab-section-card"><div class="lab-section-title">&#128465; Cleanup</div>';
+    p.cleanup.forEach(function(item) {
+      html += '<div class="checklist-item"><span style="color:var(--red);">&#10005;</span><span>' + escHtml(item) + '</span></div>';
     });
-  });
-}
+    html += '</div>';
+  }
 
-function attachQuizEvents() {
-  document.querySelectorAll('.option[data-opt]').forEach(function(el){
-    el.addEventListener('click',function(){
-      if (el.classList.contains('locked')) return;
-      selectAnswer(parseInt(el.dataset.opt));
+  // Key concepts
+  if (p.keyPoints && p.keyPoints.length) {
+    html += '<div class="lab-section-card"><div class="lab-section-title">&#128161; Key concepts learned</div>';
+    p.keyPoints.forEach(function(item) {
+      html += '<div class="checklist-item"><span style="color:var(--primary-lt);">&#9679;</span><span>' + escHtml(item) + '</span></div>';
     });
+    html += '</div>';
+  }
+
+  // MS Learn link
+  html += '<div style="margin-top:8px;">' +
+    '<a href="https://learn.microsoft.com/en-us/training/browse/?products=azure&roles=administrator" ' +
+    'target="_blank" class="ms-learn-btn" style="text-decoration:none;">' +
+    '&#9729;&#65039; Practice on Microsoft Learn free sandbox &rarr;</a>' +
+  '</div>';
+
+  return html;
+}
+
+function setLabTab(tabId, tab) {
+  S.labs.activeTab[tabId] = tab;
+  var portalEl = document.getElementById('tab-' + tabId + '-portal');
+  var cliEl    = document.getElementById('tab-' + tabId + '-cli');
+  if (portalEl) portalEl.style.display = tab==='portal'?'':'none';
+  if (cliEl)    cliEl.style.display    = tab==='cli'   ?'':'none';
+  document.querySelectorAll('[onclick*="setLabTab(\'' + tabId + '\'"]').forEach(function(btn){
+    btn.classList.toggle('active', btn.getAttribute('onclick').indexOf("'" + tab + "'") > -1);
   });
 }
 
-// ============================================================
-// QUIZ LOGIC
-// ============================================================
-function selectAnswer(opt) {
-  if (S.quiz.answers[S.quiz.current] !== undefined) return;
-  killTimer();
-  S.quiz.answers[S.quiz.current] = opt;
-  render();
+function copyCode(id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var text = el.textContent || el.innerText;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(function(){
+      var btn = el.parentElement.querySelector('.copy-btn');
+      if (btn) { btn.textContent = 'Copied!'; setTimeout(function(){ btn.textContent = 'Copy'; }, 1500); }
+    });
+  }
 }
 
-function nextQuestion() {
-  if (S.quiz.current === S.quiz.questions.length - 1) { finishQuiz(); return; }
-  S.quiz.current++;
-  render();
-  if (S.settings.timer > 0) startTimer();
+function toggleBookmark(labId) {
+  var idx = S.labs.bookmarked.indexOf(labId);
+  if (idx > -1) S.labs.bookmarked.splice(idx,1); else S.labs.bookmarked.push(labId);
+  saveLabs(); render();
 }
 
-function toggleFlag() {
-  var i = S.quiz.current;
-  if (S.quiz.flagged.has(i)) S.quiz.flagged.delete(i); else S.quiz.flagged.add(i);
-  render();
-}
-
-function quitQuiz() {
-  if (confirm('Quit? Your current session will be lost.')) { killTimer(); go('home'); }
-}
-
-function retryExam() {
-  S.quiz.answers  = [];
-  S.quiz.current  = 0;
-  S.quiz.flagged  = new Set();
-  S.quiz.startTime= Date.now();
-  S.quiz.endTime  = null;
-  render();
-  if (S.settings.timer > 0) startTimer();
-}
-
-function killTimer() {
-  if (S.quiz.timerInt) { clearInterval(S.quiz.timerInt); S.quiz.timerInt = null; }
-}
-
-function startTimer() {
-  killTimer();
-  if (!S.settings.timer) return;
-  S.quiz.timeLeft = S.settings.timer;
-  var C = 2 * Math.PI * 22;
-  S.quiz.timerInt = setInterval(function(){
-    S.quiz.timeLeft = Math.max(0, S.quiz.timeLeft - 1);
-    var tl = S.quiz.timeLeft;
-    var numEl = document.getElementById('timer-num');
-    var arcEl = document.getElementById('timer-arc');
-    if (numEl) { numEl.textContent = tl; numEl.style.color = tl<10?'var(--red)':'var(--t1)'; }
-    if (arcEl) {
-      var dash = C - (tl/S.settings.timer)*C;
-      arcEl.setAttribute('stroke-dashoffset', dash);
-      arcEl.setAttribute('stroke', tl<10?'var(--red)':tl<20?'var(--amber)':'var(--primary)');
-    }
-    if (tl <= 0) {
-      killTimer();
-      if (S.quiz.answers[S.quiz.current] === undefined) { S.quiz.answers[S.quiz.current] = -1; render(); }
-    }
-  }, 1000);
-}
-
-function finishQuiz() {
-  killTimer();
-  S.quiz.endTime = Date.now();
-  var domBreakdown = {};
-  S.quiz.questions.forEach(function(q,i){
-    if (!domBreakdown[q.domain]) domBreakdown[q.domain]={correct:0,total:0};
-    domBreakdown[q.domain].total++;
-    if (S.quiz.answers[i]===q.correct) domBreakdown[q.domain].correct++;
-  });
-  var correct = 0;
-  for (var i=0;i<S.quiz.questions.length;i++){if(S.quiz.answers[i]===S.quiz.questions[i].correct)correct++;}
-  var total = S.quiz.questions.length;
-  var score = Math.round((correct/total)*100);
-  S.history.push({
-    date:new Date().toISOString(), score:score, correct:correct, total:total,
-    passed:score>=PASS_PCT, domains:S.settings.domains.slice(),
-    difficulty:S.settings.difficulty, examMode:S.settings.examMode,
-    timer:S.settings.timer, duration:S.quiz.endTime-S.quiz.startTime,
-    domainBreakdown:domBreakdown
-  });
-  if (S.history.length > MAX_HIST) S.history.shift();
-  saveHistory();
-  go('results');
+function toggleDone(labId) {
+  var idx = S.labs.completed.indexOf(labId);
+  if (idx > -1) S.labs.completed.splice(idx,1); else S.labs.completed.push(labId);
+  saveLabs(); render();
 }
 
 // ============================================================
-// API CALL
+// GENERATE LAB (API CALL)
 // ============================================================
-function startQuiz() {
-  if (!S.apiKey) { S.error='Please enter your Anthropic API key first.'; render(); return; }
-  if (!S.settings.domains.length) { S.error='Please select at least one domain.'; render(); return; }
+function generateLab() {
+  var lab = LAB_LIST.find(function(l){ return l.id === S.currentLabId; });
+  if (!lab || !S.apiKey) return;
 
-  S.screen = 'loading';
-  S.error  = null;
-  S.quiz   = {questions:[],answers:[],flagged:new Set(),current:0,timeLeft:S.settings.timer,timerInt:null,startTime:Date.now(),endTime:null};
-  render();
+  var genBtn = document.getElementById('gen-lab-btn');
+  if (genBtn) { genBtn.disabled = true; genBtn.textContent = 'Generating...'; }
 
-  var selDomains = DOMAINS.filter(function(d){return S.settings.domains.indexOf(d.id)>-1;});
-  var domainNames = selDomains.map(function(d){return d.full;}).join(', ');
-
-  var diffGuide = {
-    easy:   'Questions should test definitions, basic concepts, and what each service does.',
-    medium: 'Use practical real-world scenarios. Require the user to choose between services or configurations.',
-    hard:   'Focus on troubleshooting broken setups, cost-optimisation trade-offs, complex multi-service architectures, and CLI flag nuances.'
-  };
-
-  var exampleDomain = selDomains[0].id;
-  var apiPrompt = 'You are a senior Microsoft Azure instructor and certified AZ-104 question writer.\n' +
-    'Generate exactly ' + S.settings.count + ' exam-quality multiple-choice questions.\n' +
-    'Domains: ' + domainNames + '.\n' +
-    'Difficulty: ' + S.settings.difficulty + ' - ' + (diffGuide[S.settings.difficulty]||diffGuide.medium) + '\n\n' +
+  var dom = DOMAINS.find(function(d){return d.id===lab.domain;}) || {full:lab.domain};
+  var apiPrompt =
+    'You are a senior Microsoft Azure instructor writing a hands-on AZ-104 lab guide.\n' +
+    'Lab: "' + lab.name + '" (Domain: ' + dom.full + ', Difficulty: ' + lab.difficulty + ', Duration: ' + lab.duration + ' min)\n\n' +
+    'Create a complete, practical lab guide a real Azure Administrator would follow.\n' +
+    'Include BOTH Azure Portal steps AND Azure CLI commands for each step.\n\n' +
+    'Return ONLY a raw JSON object (no markdown, no preamble) with this exact structure:\n' +
+    '{\n' +
+    '  "objective": "One sentence describing what the student will accomplish",\n' +
+    '  "scenario": "1-2 sentence real-world business context for why an admin would do this",\n' +
+    '  "prerequisites": ["item1", "item2", "item3"],\n' +
+    '  "steps": [\n' +
+    '    {\n' +
+    '      "title": "Step title",\n' +
+    '      "description": "Brief description of what this step does",\n' +
+    '      "portal": ["Sub-step 1: Navigate to...", "Sub-step 2: Click...", "Sub-step 3: ..."],\n' +
+    '      "cli": "az full-command --param value \\naz second-command --param value",\n' +
+    '      "note": "Optional warning or tip, or null"\n' +
+    '    }\n' +
+    '  ],\n' +
+    '  "validation": ["How to verify step 1 worked", "How to verify the whole lab worked"],\n' +
+    '  "cleanup": ["az group delete --name MyRG --yes --no-wait or portal equivalent"],\n' +
+    '  "keyPoints": ["Key Azure concept 1", "Key Azure concept 2", "Key Azure concept 3", "Key Azure concept 4"]\n' +
+    '}\n\n' +
     'Requirements:\n' +
-    '- Each question has exactly 4 options (index 0-3); exactly one is correct\n' +
-    '- Distractors must be plausible, not obviously wrong\n' +
-    '- Explanation: why the correct answer is right AND why the main distractor is wrong (2-3 sentences)\n' +
-    '- "reference": short phrase naming the relevant Azure Docs topic\n' +
-    '- Spread questions across all specified domains\n' +
-    '- Cover: portal UI decisions, Azure CLI/PowerShell commands, pricing tiers, service limits, networking, IAM, monitoring, backup\n\n' +
-    'Respond ONLY with a raw JSON array, no markdown fences, no preamble:\n' +
-    '[{"domain":"' + exampleDomain + '","question":"...","options":["A","B","C","D"],"correct":0,"explanation":"...","reference":"..."}]';
+    '- 5-8 steps for this lab\n' +
+    '- Portal sub-steps should be detailed enough to follow without screenshots\n' +
+    '- CLI commands must be real, working az or PowerShell commands\n' +
+    '- Use realistic names like "rg-az104-lab", "vm-web-01", "vnet-prod-eastus"\n' +
+    '- Include the resource group creation as the first step\n' +
+    '- Cleanup must remove all resources created in the lab\n' +
+    '- Key points should explain the underlying Azure concepts, not just repeat the steps';
 
   fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -1244,33 +1431,383 @@ function startQuiz() {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
-      max_tokens: 8000,
+      max_tokens: 4000,
       messages: [{role:'user', content: apiPrompt}]
     })
   })
   .then(function(res) {
-    if (!res.ok) return res.json().then(function(e){ throw new Error(e.error&&e.error.message?e.error.message:'API error '+res.status+' - check your API key.'); });
+    if (!res.ok) return res.json().then(function(e){ throw new Error(e.error&&e.error.message?e.error.message:'API error '+res.status); });
     return res.json();
   })
   .then(function(data) {
     var raw = (data.content||[]).map(function(c){return c.text||'';}).join('');
-    // Strip markdown fences without using backtick literals in regex
     var fence = String.fromCharCode(96,96,96);
     var clean = raw.split(fence+'json').join('').split(fence).join('').trim();
     var parsed = JSON.parse(clean);
-    if (!Array.isArray(parsed)||!parsed.length) throw new Error('Unexpected response format.');
-    S.quiz.questions = parsed;
-    var qs = document.getElementById('quiz-screen');
-    if (qs) qs.remove();
-    S.screen = 'quiz';
+    if (!parsed.steps) throw new Error('Invalid lab guide format returned.');
+    setLabContent(S.currentLabId, JSON.stringify(parsed));
     render();
-    if (S.settings.timer > 0) startTimer();
   })
   .catch(function(e) {
-    S.screen = 'home';
-    S.error  = e.message || 'Failed to generate questions. Check your API key and internet connection.';
-    render();
+    var genBtn2 = document.getElementById('gen-lab-btn');
+    if (genBtn2) { genBtn2.disabled = false; genBtn2.textContent = '&#9889; Try again'; }
+    var errDiv = document.createElement('div');
+    errDiv.className = 'err-box';
+    errDiv.style.marginTop = '12px';
+    errDiv.textContent = 'Error: ' + (e.message || 'Unknown error');
+    if (genBtn2 && genBtn2.parentNode) genBtn2.parentNode.appendChild(errDiv);
   });
+}
+
+// ============================================================
+// LOADING SCREEN
+// ============================================================
+function renderLoading() {
+  return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px;gap:18px;">' +
+    '<div class="spinner"></div>' +
+    '<div style="font-size:16px;font-weight:700;">Generating ' + S.settings.count + ' questions...</div>' +
+    '<div class="text-sm text-2">Claude is crafting exam-grade AZ-104 questions including multi-select and drag &amp; drop.</div>' +
+    '</div>';
+}
+
+// ============================================================
+// QUIZ SCREEN
+// ============================================================
+function renderQuiz() {
+  var q = S.quiz;
+  var question = q.questions[q.current];
+  if (!question) return '<div id="quiz-topbar"></div><div id="quiz-body"><div class="spinner"></div></div>';
+  var type       = question.type || 'single';
+  var answered   = isAnswered(q.current);
+  var pct        = Math.round((q.current / q.questions.length) * 100);
+  var isLast     = q.current === q.questions.length - 1;
+  var domain     = DOMAINS.find(function(d){return d.id===question.domain;}) || {icon:'',name:question.domain};
+  var isFlagged  = q.flagged.has(q.current);
+  var timerOn    = S.settings.timer > 0;
+  var tl         = q.timeLeft;
+  var C          = 2 * Math.PI * 22;
+  var dash       = timerOn ? C - (tl/S.settings.timer)*C : 0;
+  var timerColor = tl<10?'var(--red)':tl<20?'var(--amber)':'var(--primary)';
+  var typeBadge  = type==='multi'?'<span class="badge b-purple">&#9635; Select '+(question.selectCount||2)+'</span>':type==='drag_drop'?'<span class="badge b-amber">&#8645; Drag &amp; Drop</span>':'';
+  var timerSvg   = timerOn ?
+    '<div class="timer-wrap"><svg width="52" height="52" viewBox="0 0 52 52" style="transform:rotate(-90deg)">' +
+    '<circle cx="26" cy="26" r="22" fill="none" stroke="var(--surface-3)" stroke-width="3"/>' +
+    '<circle id="timer-arc" cx="26" cy="26" r="22" fill="none" stroke="'+timerColor+'" stroke-width="3" stroke-dasharray="'+C+'" stroke-dashoffset="'+dash+'" stroke-linecap="round"/></svg>' +
+    '<div class="timer-num" id="timer-num" style="color:'+(tl<10?'var(--red)':'var(--t1)')+'">'+Math.max(0,tl)+'</div></div>' : '';
+  var bodyHtml = type==='single' ? renderSingleQ(question,answered) : type==='multi' ? renderMultiQ(question,answered) : renderDndQ(question,answered);
+  var showFeedback = answered && !S.settings.examMode;
+  var expHtml = '';
+  if (showFeedback) {
+    var ok2 = isCorrect(q.current);
+    var ref = question.reference ? '<span class="ref-link">&#128218; Reference: '+escHtml(question.reference)+'</span>' : '';
+    expHtml = '<div class="explanation mb-4"><strong>'+(ok2?'&#9989; Correct!':'&#10060; Incorrect.')+'</strong> '+escHtml(question.explanation)+ref+'</div>';
+  }
+  var actHtml = '';
+  if (!answered) {
+    if (type==='single') actHtml = '<span class="text-sm text-3">Pick an answer to continue</span>';
+    else {
+      var cur = S.quiz.answers[S.quiz.current]||[]; var need = question.selectCount||(type==='multi'?2:3);
+      actHtml = '<button class="btn btn-primary" id="submit-q-btn"'+(cur.length!==need?' disabled':'')+'> Submit &rarr;</button>';
+    }
+  } else {
+    actHtml = '<button class="btn btn-primary" onclick="nextQuestion()">'+(isLast?'&#127937; Finish exam':'Next &rarr;')+'</button>';
+  }
+  return '<div id="quiz-topbar">' +
+    '<div class="flex items-center justify-between mb-2" style="gap:12px;">' +
+      '<div class="flex items-center gap-2" style="flex-wrap:wrap;">' +
+        '<button class="btn btn-ghost" onclick="quitQuiz()" style="padding:7px 14px;font-size:12px;">&larr; Quit</button>' +
+        '<span class="badge b-blue">'+domain.icon+' '+escHtml(domain.name)+'</span>' + typeBadge +
+        (S.settings.examMode?'<span class="badge b-amber">&#129514; Exam mode</span>':'') +
+        (isFlagged?'<span class="badge b-amber">&#128681; Flagged</span>':'') +
+      '</div>' +
+      '<div class="flex items-center gap-3"><span class="text-sm font-mono text-2">'+(q.current+1)+' / '+q.questions.length+'</span>'+timerSvg+'</div>' +
+    '</div>' +
+    '<div class="prog-wrap"><div class="prog-fill" style="width:'+pct+'%"></div></div>' +
+  '</div>' +
+  '<div id="quiz-body">' +
+    '<div class="card mb-4"><p style="font-size:16px;line-height:1.75;">'+escHtml(question.question)+'</p></div>' +
+    bodyHtml + expHtml +
+    '<div class="flex justify-between items-center">' +
+      '<button class="flag-btn'+(isFlagged?' flagged':'')+'" onclick="toggleFlag()">'+(isFlagged?'&#128681; Flagged':'&#9873; Flag for review')+'</button>' +
+      actHtml +
+    '</div>' +
+  '</div>';
+}
+
+function renderSingleQ(question, answered) {
+  var userAns = S.quiz.answers[S.quiz.current];
+  return '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">' +
+    question.options.map(function(opt,i){
+      var cls='option'; if(answered){cls+=' locked'; if(!S.settings.examMode){if(i===question.correct)cls+=' rev-ok'; if(i===userAns&&userAns!==question.correct)cls+=' sel-bad'; if(i===userAns&&userAns===question.correct)cls='option locked sel-ok';}else{if(i===userAns)cls+=' rev-ok';}}
+      return '<div class="'+cls+'" data-opt="'+i+'" data-type="single"><div class="opt-key">'+String.fromCharCode(65+i)+'</div><div style="flex:1">'+escHtml(opt)+'</div></div>';
+    }).join('')+'</div>';
+}
+
+function renderMultiQ(question, answered) {
+  var sel=S.quiz.answers[S.quiz.current]||[]; var need=question.selectCount||2; var correct=question.correct||[];
+  return '<div class="'+(sel.length===need?'multi-counter ready':'multi-counter')+'" style="margin-bottom:10px;">'+sel.length+' / '+need+' selected</div>' +
+    '<div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;">' +
+    question.options.map(function(opt,i){
+      var isSel=sel.indexOf(i)>-1; var cls='multi-option';
+      if(answered){cls+=' locked'; if(!S.settings.examMode){if(correct.indexOf(i)>-1)cls+=' reveal-correct'; else if(isSel)cls+=' reveal-wrong';}else{if(isSel)cls+=' checked';}}
+      else{if(isSel)cls+=' checked';}
+      return '<div class="'+cls+'" data-opt="'+i+'" data-type="multi"><div class="opt-key">'+(isSel?'&#9635;':'&#9634;')+'</div><div style="flex:1">'+escHtml(opt)+'</div></div>';
+    }).join('')+'</div>';
+}
+
+function renderDndQ(question, answered) {
+  var placed=S.quiz.answers[S.quiz.current]||[]; var need=question.selectCount||3; var correct=question.correct||[];
+  var pool=[]; for(var k=0;k<question.options.length;k++){if(placed.indexOf(k)===-1)pool.push(k);}
+  var pLocked=answered?' locked':'';
+  var actItems=pool.length===0?'<div class="dnd-empty">All options placed</div>':pool.map(function(oi){return '<div class="dnd-item'+pLocked+'" data-dnd-pool="'+oi+'"><span class="drag-handle">&#8801;</span><span>'+escHtml(question.options[oi])+'</span></div>';}).join('');
+  var ansItems='<div class="dnd-slots-info">'+placed.length+' / '+need+' placed</div>';
+  if(placed.length===0){ansItems+='<div class="dnd-empty">Click items from Actions to place here</div>';}
+  else{ansItems+=placed.map(function(oi){var cls='dnd-item';if(answered&&!S.settings.examMode){cls+=correct.indexOf(oi)>-1?' correct':' incorrect';}cls+=pLocked;return '<div class="'+cls+'" data-dnd-answer="'+oi+'">'+(answered?'':'<span class="drag-handle" style="color:var(--red);">&#10005;</span>')+'<span>'+escHtml(question.options[oi])+'</span></div>';}).join('');}
+  var missed=''; if(answered&&!S.settings.examMode){var m=correct.filter(function(c){return placed.indexOf(c)===-1;});if(m.length){missed='<div style="margin-top:10px;"><div class="text-xs text-3" style="margin-bottom:6px;">Also correct:</div>'+m.map(function(oi){return '<div class="dnd-item correct locked" style="opacity:.8"><span>'+escHtml(question.options[oi])+'</span></div>';}).join('')+'</div>';}}
+  return '<div class="dnd-container">' +
+    '<div><div class="dnd-panel"><div class="dnd-panel-title">&#8645; Actions (click to place)</div>'+actItems+'</div></div>' +
+    '<div><div class="dnd-answer-panel'+(answered?' locked':'')+'">' +
+      '<div class="dnd-panel-title">Answer Area</div>'+ansItems+missed+
+    '</div></div></div>';
+}
+
+// ============================================================
+// RESULTS SCREEN
+// ============================================================
+function renderResults() {
+  var q=S.quiz; var correct=0;
+  for(var ri=0;ri<q.questions.length;ri++){if(isCorrect(ri))correct++;}
+  var total=q.questions.length; var score=Math.round((correct/total)*100); var passed=score>=PASS_PCT;
+  var dur=(q.endTime&&q.startTime)?Math.round((q.endTime-q.startTime)/1000):0;
+  var mins=Math.floor(dur/60); var secs=String(dur%60).padStart(2,'0');
+  var flagged=q.flagged.size;
+  var domainStats={};
+  q.questions.forEach(function(qu,i){if(!domainStats[qu.domain])domainStats[qu.domain]={correct:0,total:0};domainStats[qu.domain].total++;if(isCorrect(i))domainStats[qu.domain].correct++;});
+  var typeCounts={single:0,multi:0,drag_drop:0}; var typeCorrect={single:0,multi:0,drag_drop:0};
+  q.questions.forEach(function(qu,i){var t=qu.type||'single';typeCounts[t]=(typeCounts[t]||0)+1;if(isCorrect(i))typeCorrect[t]=(typeCorrect[t]||0)+1;});
+  var weakDomains=Object.keys(domainStats).filter(function(id){return Math.round(domainStats[id].correct/domainStats[id].total*100)<60;}).map(function(id){return (DOMAINS.find(function(d){return d.id===id;})||{name:id}).name;});
+  var scoreColor=score>=80?'var(--green)':score>=PASS_PCT?'var(--primary-lt)':'var(--red)';
+  var bars=Object.keys(domainStats).map(function(domId){var stat=domainStats[domId];var dom=DOMAINS.find(function(d){return d.id===domId;})||{icon:'',name:domId};var pct=Math.round((stat.correct/stat.total)*100);var col=pct>=80?'var(--green)':pct>=60?'var(--primary-lt)':'var(--red)';return '<div class="bar-row"><div class="bar-label">'+dom.icon+' '+escHtml(dom.name)+'</div><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div><div class="bar-pct" style="color:'+col+'">'+pct+'%</div></div>';}).join('');
+  var typeLabels={single:'Single-answer',multi:'Multi-select',drag_drop:'Drag &amp; Drop'};
+  var typeBoxes=Object.keys(typeCounts).filter(function(t){return typeCounts[t]>0;}).map(function(t){var cnt=typeCounts[t];var c=typeCorrect[t]||0;var pct=Math.round((c/cnt)*100);var col=pct>=80?'var(--green)':pct>=60?'var(--amber)':'var(--red)';return '<div class="stat-box"><div class="stat-num" style="font-size:18px;color:'+col+'">'+c+'/'+cnt+'</div><div class="stat-lbl">'+typeLabels[t]+'</div></div>';}).join('');
+  var weakBox=weakDomains.length>0?'<div class="card-sm" style="border-color:rgba(245,158,11,0.25);background:var(--amber-dim);"><div class="text-sm fw-700" style="color:var(--amber);margin-bottom:4px;">&#128161; Study recommendations</div><div class="text-sm text-2">Focus on: <strong style="color:var(--t1)">'+escHtml(weakDomains.join(', '))+'</strong> &mdash; scored below 60%.</div></div>':'';
+  var flagBox=flagged>0?'<div class="card-sm mb-3 flex items-center justify-between" style="gap:12px;"><span class="text-sm">&#128681; You flagged <strong>'+flagged+'</strong> question'+(flagged!==1?'s':'')+' for review.</span><button class="btn btn-ghost" onclick="go(\'review\')" style="font-size:12px;padding:6px 12px;flex-shrink:0;">Review &rarr;</button></div>':'';
+
+  // Save history
+  var domBreakdown={};
+  q.questions.forEach(function(qu,i){if(!domBreakdown[qu.domain])domBreakdown[qu.domain]={correct:0,total:0};domBreakdown[qu.domain].total++;if(isCorrect(i))domBreakdown[qu.domain].correct++;});
+  if(!S.quiz._saved){
+    S.quiz._saved=true;
+    S.history.push({date:new Date().toISOString(),score:score,correct:correct,total:total,passed:passed,domains:S.settings.domains.slice(),difficulty:S.settings.difficulty,examMode:S.settings.examMode,timer:S.settings.timer,duration:q.endTime-q.startTime,domainBreakdown:domBreakdown});
+    if(S.history.length>MAX_HIST)S.history.shift();
+    saveHistory();
+  }
+
+  return '<div class="flex justify-between items-center mb-4" style="flex-wrap:wrap;gap:10px;">' +
+    '<h1 style="font-size:20px;font-weight:800;">Exam Results</h1>' +
+    '<div class="flex gap-2" style="flex-wrap:wrap;">' +
+      '<button class="btn btn-ghost" onclick="go(\'review\')" style="font-size:12px;padding:8px 14px;">Review answers</button>' +
+      '<button class="btn btn-ghost" onclick="retryExam()" style="font-size:12px;padding:8px 14px;">&#128260; Retry</button>' +
+      '<button class="btn btn-ghost" onclick="go(\'home\')" style="font-size:12px;padding:8px 14px;">&larr; New session</button>' +
+    '</div></div>' +
+    '<div class="card mb-3" style="text-align:center;padding:40px 24px;">' +
+      '<div style="font-size:80px;font-weight:800;font-family:\'JetBrains Mono\',monospace;line-height:1;color:'+scoreColor+';">'+score+'%</div>' +
+      '<div class="text-sm text-2" style="margin:10px 0 18px;">'+(passed?'&#127881; You passed! Well done.':'&#128218; Keep studying &mdash; aim for '+PASS_PCT+'%+')+'</div>' +
+      '<span class="badge '+(passed?'b-green':'b-red')+'" style="font-size:13px;padding:6px 18px;">'+(passed?'&#10003; Passing score':'&#10005; Below passing score ('+PASS_PCT+'% required)')+'</span>' +
+    '</div>' +
+    '<div class="stats-row mb-3">' +
+      '<div class="stat-box"><div class="stat-num" style="color:var(--green)">'+correct+'</div><div class="stat-lbl">Correct</div></div>' +
+      '<div class="stat-box"><div class="stat-num" style="color:var(--red)">'+(total-correct)+'</div><div class="stat-lbl">Incorrect</div></div>' +
+      '<div class="stat-box"><div class="stat-num">'+total+'</div><div class="stat-lbl">Total</div></div>' +
+      '<div class="stat-box"><div class="stat-num text-2">'+mins+'m '+secs+'s</div><div class="stat-lbl">Time</div></div>' +
+    '</div>' +
+    (typeBoxes?'<div class="mb-3"><div class="sec-label">By question type</div><div class="stats-row">'+typeBoxes+'</div></div>':'') +
+    flagBox +
+    '<div class="card mb-3"><div class="sec-label">Domain Breakdown</div><div class="bar-wrap">'+bars+'</div></div>' +
+    weakBox;
+}
+
+// ============================================================
+// REVIEW SCREEN
+// ============================================================
+function renderReview() {
+  var q=S.quiz;
+  var items=q.questions.map(function(question,i){
+    var ok=isCorrect(i); var flagged=q.flagged.has(i);
+    var dom=DOMAINS.find(function(d){return d.id===question.domain;})||{icon:'',name:question.domain};
+    var type=question.type||'single';
+    var typeTag=type==='multi'?'<span class="badge b-purple" style="font-size:10px;">Multi-select</span>':type==='drag_drop'?'<span class="badge b-amber" style="font-size:10px;">Drag &amp; Drop</span>':'';
+    var ansDetail='';
+    if(type==='single'){var uA=S.quiz.answers[i];ansDetail='<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">'+question.options.map(function(opt,oi){var iC=oi===question.correct;var iU=oi===uA;var border='var(--border)',bg='transparent',color='var(--t2)',label='';if(iC){border='var(--green)';bg='var(--green-dim)';color='var(--green)';label='&larr; correct';}if(iU&&!ok){border='var(--red)';bg='var(--red-dim)';color='var(--red)';label='&larr; your answer';}if(iU&&ok){border='var(--green)';bg='var(--green-dim)';color='var(--green)';}return '<div style="padding:8px 12px;border-radius:8px;border:1px solid '+border+';background:'+bg+';font-size:13px;color:'+color+';display:flex;justify-content:space-between;gap:8px;"><span><strong style="font-family:\'JetBrains Mono\',monospace;">'+String.fromCharCode(65+oi)+'.</strong> '+escHtml(opt)+'</span>'+(label?'<span style="opacity:.7;white-space:nowrap;font-size:11px;">'+label+'</span>':'')+'</div>';}).join('')+'</div>';}
+    else{var uP=S.quiz.answers[i]||[];var cS=question.correct||[];ansDetail='<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;">'+question.options.map(function(opt,oi){var iC=cS.indexOf(oi)>-1;var iU=uP.indexOf(oi)>-1;var border='var(--border)',bg='transparent',color='var(--t2)',label='';if(iC&&iU){border='var(--green)';bg='var(--green-dim)';color='var(--green)';label='&#10003; correct';}if(iC&&!iU){border='var(--green)';bg='var(--green-dim)';color='var(--green)';label='&#10003; missed';}if(!iC&&iU){border='var(--red)';bg='var(--red-dim)';color='var(--red)';label='&#10005; wrong pick';}return '<div style="padding:8px 12px;border-radius:8px;border:1px solid '+border+';background:'+bg+';font-size:13px;color:'+color+';display:flex;justify-content:space-between;gap:8px;"><span><strong style="font-family:\'JetBrains Mono\',monospace;">'+String.fromCharCode(65+oi)+'.</strong> '+escHtml(opt)+'</span>'+(label?'<span style="opacity:.7;white-space:nowrap;font-size:11px;">'+label+'</span>':'')+'</div>';}).join('')+'</div>';}
+    var ref=question.reference?'<span class="ref-link">&#128218; '+escHtml(question.reference)+'</span>':'';
+    return '<div style="padding:20px 24px;'+(i>0?'border-top:1px solid var(--border)':'')+'">' +
+      '<div class="flex items-center justify-between mb-2" style="gap:8px;flex-wrap:wrap;">' +
+        '<div class="flex items-center gap-2"><span class="badge '+(ok?'b-green':'b-red')+'">'+(ok?'&#10003; Correct':'&#10005; Incorrect')+'</span><span class="badge b-gray">'+dom.icon+' '+escHtml(dom.name)+'</span>'+typeTag+(flagged?'<span class="badge b-amber">&#128681;</span>':'')+'</div>' +
+        '<span class="text-xs font-mono text-3">Q'+(i+1)+' of '+q.questions.length+'</span>' +
+      '</div>' +
+      '<p style="font-size:14px;line-height:1.7;margin-bottom:12px;">'+escHtml(question.question)+'</p>' +
+      ansDetail +
+      '<div class="explanation">'+escHtml(question.explanation)+ref+'</div>' +
+    '</div>';
+  }).join('');
+  return '<div class="flex justify-between items-center mb-4"><h1 style="font-size:20px;font-weight:800;">Answer Review</h1><button class="btn btn-ghost" onclick="go(\'results\')" style="font-size:12px;padding:8px 14px;">&larr; Back to results</button></div>' +
+    '<div class="card" style="padding:0;overflow:hidden;">'+items+'</div>';
+}
+
+// ============================================================
+// HISTORY + ANALYTICS
+// ============================================================
+function renderHistory() {
+  var h=S.history;
+  if(!h.length)return '<h1 style="font-size:20px;font-weight:800;margin-bottom:24px;">Session History</h1><div class="empty"><div class="empty-icon">&#128203;</div><div class="empty-text">No sessions yet.</div></div>';
+  var items=h.slice().reverse().map(function(s){
+    var passed=s.score>=PASS_PCT; var d=new Date(s.date);
+    var durSec=s.duration?Math.round(s.duration/1000):0;
+    var doms=(s.domains||[]).map(function(id){return (DOMAINS.find(function(x){return x.id===id;})||{name:id}).name;}).join(', ');
+    return '<div class="h-item"><div class="h-score-box" style="background:'+(passed?'var(--green-dim)':'var(--red-dim)')+'">' +
+      '<span class="h-score-num" style="color:'+(passed?'var(--green)':'var(--red)')+'">'+s.score+'%</span></div>' +
+      '<div style="flex:1;min-width:0;"><div class="flex items-center gap-2 mb-1">' +
+        '<span class="badge '+(passed?'b-green':'b-red')+'" style="font-size:10px;">'+(passed?'Pass':'Fail')+'</span>' +
+        '<span class="badge b-gray" style="font-size:10px;">'+escHtml(s.difficulty||'medium')+'</span>' +
+        (s.examMode?'<span class="badge b-purple" style="font-size:10px;">Exam</span>':'') +
+        '<span class="badge b-gray" style="font-size:10px;">&#9201; '+(durSec?Math.floor(durSec/60)+'m '+String(durSec%60).padStart(2,'0')+'s':'--')+'</span>' +
+      '</div><div class="text-sm text-2 truncate">'+escHtml(doms)+'</div></div>' +
+      '<div style="text-align:right;flex-shrink:0;"><div class="text-sm fw-700">'+s.correct+'/'+s.total+'</div>' +
+      '<div class="text-xs text-3">'+d.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})+'</div></div></div>';
+  }).join('');
+  return '<div class="flex justify-between items-center mb-4">' +
+    '<h1 style="font-size:20px;font-weight:800;">Session History <span class="badge b-gray" style="font-size:12px;">'+h.length+'</span></h1>' +
+    '<button class="btn btn-danger" id="clear-hist-btn" style="font-size:12px;padding:8px 14px;">&#128465; Clear all</button>' +
+    '</div><div style="display:flex;flex-direction:column;gap:8px;">'+items+'</div>';
+}
+
+function renderAnalytics() {
+  var h=S.history;
+  if(!h.length)return '<h1 style="font-size:20px;font-weight:800;margin-bottom:24px;">Analytics</h1><div class="empty"><div class="empty-icon">&#128200;</div><div class="empty-text">No data yet.</div></div>';
+  var total=h.length; var avgScore=Math.round(h.reduce(function(a,b){return a+b.score;},0)/total);
+  var passRate=Math.round(h.filter(function(s){return s.score>=PASS_PCT;}).length/total*100);
+  var best=Math.max.apply(Math,h.map(function(s){return s.score;}));
+  var last=h[h.length-1]; var prev=h.length>1?h[h.length-2]:null; var trend=prev?last.score-prev.score:0;
+  var domPerf={}; DOMAINS.forEach(function(d){domPerf[d.id]={correct:0,total:0};});
+  h.forEach(function(s){if(!s.domainBreakdown)return;Object.keys(s.domainBreakdown).forEach(function(id){var stat=s.domainBreakdown[id];if(domPerf[id]){domPerf[id].correct+=stat.correct;domPerf[id].total+=stat.total;}});});
+  var recent=h.slice(-15); var maxScore=Math.max.apply(Math,recent.map(function(s){return s.score;}));
+  var totalQs=h.reduce(function(a,b){return a+(b.total||0);},0);
+  var sparkBars=recent.map(function(s,i){var hPx=Math.max(6,Math.round((s.score/Math.max(maxScore,1))*100*0.6));var op=0.3+(i/recent.length)*0.7;return '<div class="spark-bar" title="'+s.score+'%" style="height:'+hPx+'px;background:'+(s.score>=PASS_PCT?'var(--primary)':'var(--red)')+';opacity:'+op.toFixed(2)+';"></div>';}).join('');
+  var domBars=DOMAINS.map(function(d){var stat=domPerf[d.id];if(!stat||!stat.total)return '<div class="bar-row"><div class="bar-label">'+d.icon+' '+escHtml(d.name)+'</div><div class="bar-track"><div class="bar-fill" style="width:0%;background:var(--t3)"></div></div><div class="bar-pct text-3">--</div></div>';var pct=Math.round((stat.correct/stat.total)*100);var col=pct>=80?'var(--green)':pct>=60?'var(--primary-lt)':'var(--red)';return '<div class="bar-row"><div class="bar-label">'+d.icon+' '+escHtml(d.name)+'</div><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div><div class="bar-pct" style="color:'+col+'">'+pct+'%</div></div>';}).join('');
+  return '<h1 style="font-size:20px;font-weight:800;margin-bottom:24px;">Analytics</h1>' +
+    '<div class="stats-row mb-3"><div class="stat-box"><div class="stat-num">'+total+'</div><div class="stat-lbl">Sessions</div></div><div class="stat-box"><div class="stat-num" style="color:'+(avgScore>=PASS_PCT?'var(--green)':'var(--amber)')+'">'+avgScore+'%</div><div class="stat-lbl">Avg Score</div></div><div class="stat-box"><div class="stat-num">'+passRate+'%</div><div class="stat-lbl">Pass Rate</div></div><div class="stat-box"><div class="stat-num" style="color:'+(trend>0?'var(--green)':trend<0?'var(--red)':'var(--t2)')+'">'+((trend>0?'+':'')+trend)+'%</div><div class="stat-lbl">Trend</div></div></div>' +
+    '<div class="card mb-3"><div class="sec-label">Score history (last '+recent.length+' sessions)</div><div class="spark-wrap">'+sparkBars+'</div><div style="display:flex;justify-content:space-between;margin-top:6px;"><span class="text-xs text-3">Oldest</span><span class="text-xs text-3">Latest &rarr; '+last.score+'%</span></div></div>' +
+    '<div class="card mb-3"><div class="sec-label">Domain Performance ('+totalQs+' questions)</div><div class="bar-wrap">'+domBars+'</div></div>' +
+    '<div class="card-sm flex items-center justify-between gap-3" style="flex-wrap:wrap;"><span class="text-sm text-2">All-time best: <strong style="color:var(--t1)">'+best+'%</strong> &middot; Total questions: <strong style="color:var(--t1)">'+totalQs+'</strong></span><button class="btn btn-danger" id="clear-hist-btn2" style="font-size:12px;padding:7px 14px;">&#128465; Reset data</button></div>';
+}
+
+// ============================================================
+// EVENT ATTACHMENT
+// ============================================================
+function attachMainEvents() {
+  var keyInp=document.getElementById('key-inp');
+  if(keyInp)keyInp.addEventListener('input',function(e){S.apiKey=e.target.value.trim();saveSettings();});
+  var tKeyBtn=document.getElementById('toggle-key-btn');
+  if(tKeyBtn)tKeyBtn.addEventListener('click',function(){S.showKey=!S.showKey;render();});
+  var cKeyBtn=document.getElementById('clear-key-btn');
+  if(cKeyBtn)cKeyBtn.addEventListener('click',function(){S.apiKey='';S.showKey=false;saveSettings();render();});
+  var togAll=document.getElementById('tog-all-btn');
+  if(togAll)togAll.addEventListener('click',function(){S.settings.domains=S.settings.domains.length===DOMAINS.length?[]:DOMAINS.map(function(d){return d.id;});saveSettings();render();});
+  document.querySelectorAll('.domain-card[data-domain]').forEach(function(el){el.addEventListener('click',function(){var id=el.dataset.domain;var idx=S.settings.domains.indexOf(id);if(idx>-1)S.settings.domains.splice(idx,1);else S.settings.domains.push(id);saveSettings();render();});});
+  document.querySelectorAll('[data-diff]').forEach(function(el){el.addEventListener('click',function(){S.settings.difficulty=el.dataset.diff;saveSettings();render();});});
+  document.querySelectorAll('[data-count]').forEach(function(el){el.addEventListener('click',function(){S.settings.count=parseInt(el.dataset.count);saveSettings();render();});});
+  document.querySelectorAll('[data-timer]').forEach(function(el){el.addEventListener('click',function(){S.settings.timer=parseInt(el.dataset.timer);saveSettings();render();});});
+  var eT=document.getElementById('exam-tog');if(eT)eT.addEventListener('change',function(){S.settings.examMode=eT.checked;saveSettings();});
+  var sB=document.getElementById('start-btn');if(sB)sB.addEventListener('click',startQuiz);
+
+  // Lab events
+  document.querySelectorAll('[data-domain-toggle]').forEach(function(el){
+    el.addEventListener('click',function(){
+      var domId=el.dataset.domainToggle;
+      var body=document.getElementById('body-'+domId);
+      if(!body)return;
+      var isOpen=body.classList.contains('open');
+      el.classList.toggle('open',!isOpen);
+      body.classList.toggle('open',!isOpen);
+      if(domId!=='bookmarked'){var idx=S.labs.openDomains.indexOf(domId);if(isOpen){if(idx>-1)S.labs.openDomains.splice(idx,1);}else{if(idx===-1)S.labs.openDomains.push(domId);}saveLabs();}
+    });
+  });
+  var genBtn=document.getElementById('gen-lab-btn');if(genBtn)genBtn.addEventListener('click',generateLab);
+  var labBookBtn=document.getElementById('lab-book-btn');if(labBookBtn)labBookBtn.addEventListener('click',function(){toggleBookmark(S.currentLabId);});
+  var labDoneBtn=document.getElementById('lab-done-btn');if(labDoneBtn)labDoneBtn.addEventListener('click',function(){toggleDone(S.currentLabId);});
+
+  ['clear-hist-btn','clear-hist-btn2'].forEach(function(id){var btn=document.getElementById(id);if(btn)btn.addEventListener('click',function(){if(confirm('Clear all data?')){S.history=[];saveHistory();render();}});});
+}
+
+function attachQuizEvents() {
+  document.querySelectorAll('.option[data-type="single"]').forEach(function(el){el.addEventListener('click',function(){if(el.classList.contains('locked'))return;selectAnswer(parseInt(el.dataset.opt));});});
+  document.querySelectorAll('.multi-option[data-type="multi"]').forEach(function(el){el.addEventListener('click',function(){if(el.classList.contains('locked'))return;var opt=parseInt(el.dataset.opt);var q=S.quiz.questions[S.quiz.current];var need=q.selectCount||2;var cur=S.quiz.answers[S.quiz.current]||[];var idx=cur.indexOf(opt);if(idx>-1)cur.splice(idx,1);else if(cur.length<need)cur.push(opt);S.quiz.answers[S.quiz.current]=cur;render();});});
+  document.querySelectorAll('[data-dnd-pool]').forEach(function(el){el.addEventListener('click',function(){if(el.classList.contains('locked'))return;var oi=parseInt(el.dataset.dndPool);var q=S.quiz.questions[S.quiz.current];var need=q.selectCount||3;var cur=S.quiz.answers[S.quiz.current]||[];if(cur.length<need){cur.push(oi);S.quiz.answers[S.quiz.current]=cur;render();}});});
+  document.querySelectorAll('[data-dnd-answer]').forEach(function(el){el.addEventListener('click',function(){if(el.classList.contains('locked'))return;var oi=parseInt(el.dataset.dndAnswer);var cur=S.quiz.answers[S.quiz.current]||[];var idx=cur.indexOf(oi);if(idx>-1){cur.splice(idx,1);S.quiz.answers[S.quiz.current]=cur;render();}});});
+  var sqBtn=document.getElementById('submit-q-btn');if(sqBtn)sqBtn.addEventListener('click',function(){killTimer();render();});
+}
+
+// ============================================================
+// QUIZ LOGIC
+// ============================================================
+function selectAnswer(opt){if(isAnswered(S.quiz.current))return;killTimer();S.quiz.answers[S.quiz.current]=opt;render();}
+function nextQuestion(){if(S.quiz.current===S.quiz.questions.length-1){finishQuiz();return;}S.quiz.current++;render();if(S.settings.timer>0)startTimer();}
+function toggleFlag(){var i=S.quiz.current;if(S.quiz.flagged.has(i))S.quiz.flagged.delete(i);else S.quiz.flagged.add(i);render();}
+function quitQuiz(){if(confirm('Quit? Session will be lost.')){killTimer();go('home');}}
+function retryExam(){S.quiz.answers=[];S.quiz.current=0;S.quiz.flagged=new Set();S.quiz.startTime=Date.now();S.quiz.endTime=null;S.quiz._saved=false;render();if(S.settings.timer>0)startTimer();}
+function killTimer(){if(S.quiz.timerInt){clearInterval(S.quiz.timerInt);S.quiz.timerInt=null;}}
+function startTimer(){
+  killTimer();if(!S.settings.timer)return;
+  S.quiz.timeLeft=S.settings.timer;var C=2*Math.PI*22;
+  S.quiz.timerInt=setInterval(function(){
+    S.quiz.timeLeft=Math.max(0,S.quiz.timeLeft-1);var tl=S.quiz.timeLeft;
+    var numEl=document.getElementById('timer-num');var arcEl=document.getElementById('timer-arc');
+    if(numEl){numEl.textContent=tl;numEl.style.color=tl<10?'var(--red)':'var(--t1)';}
+    if(arcEl){arcEl.setAttribute('stroke-dashoffset',C-(tl/S.settings.timer)*C);arcEl.setAttribute('stroke',tl<10?'var(--red)':tl<20?'var(--amber)':'var(--primary)');}
+    if(tl<=0){killTimer();if(!isAnswered(S.quiz.current)){var type=(S.quiz.questions[S.quiz.current]||{}).type||'single';S.quiz.answers[S.quiz.current]=type==='single'?-1:[];render();}}
+  },1000);
+}
+function finishQuiz(){killTimer();S.quiz.endTime=Date.now();S.quiz._saved=false;go('results');}
+
+// ============================================================
+// EXAM GENERATION
+// ============================================================
+function startQuiz(){
+  if(!S.apiKey){S.error='Please enter your Anthropic API key first.';render();return;}
+  if(!S.settings.domains.length){S.error='Please select at least one domain.';render();return;}
+  S.screen='loading';S.error=null;
+  S.quiz={questions:[],answers:[],flagged:new Set(),current:0,timeLeft:S.settings.timer,timerInt:null,startTime:Date.now(),endTime:null,_saved:false};
+  render();
+  var selDomains=DOMAINS.filter(function(d){return S.settings.domains.indexOf(d.id)>-1;});
+  var domainNames=selDomains.map(function(d){return d.full;}).join(', ');
+  var diffGuide={easy:'Questions should test definitions, basic concepts, and what each service does.',medium:'Use practical real-world scenarios. Require the user to choose between services or configurations.',hard:'Focus on troubleshooting broken setups, cost-optimisation, complex architectures, and CLI nuances.'};
+  var n=S.settings.count; var nSingle=Math.round(n*0.50); var nMulti=Math.round(n*0.30); var nDd=n-nSingle-nMulti; var exD=selDomains[0].id;
+  var apiPrompt='You are a senior Microsoft Azure instructor writing AZ-104 exam practice questions.\n'+
+    'Generate exactly '+n+' questions: '+nSingle+' single-answer, '+nMulti+' multi-select, '+nDd+' drag-and-drop.\n'+
+    'Domains: '+domainNames+'.\nDifficulty: '+S.settings.difficulty+' - '+(diffGuide[S.settings.difficulty]||diffGuide.medium)+'\n\n'+
+    'TYPES:\n1. type:"single" - 4 options, correct is a number 0-3.\n2. type:"multi" - 5 options, selectCount correct (2 or 3), correct is an array. Say "Select TWO/THREE" in question.\n3. type:"drag_drop" - 5 options, selectCount correct (2 or 3), correct is array. Say "Select TWO/THREE that apply".\n\n'+
+    'Rules: Plausible distractors. Explain why correct is right and key distractor wrong. Include reference topic. Spread across all domains.\n\n'+
+    'Respond ONLY with raw JSON array:\n[{"type":"single","domain":"'+exD+'","question":"...","options":["A","B","C","D"],"correct":0,"explanation":"...","reference":"..."},'+
+    '{"type":"multi","domain":"'+exD+'","question":"Select TWO...","selectCount":2,"options":["A","B","C","D","E"],"correct":[0,2],"explanation":"...","reference":"..."},'+
+    '{"type":"drag_drop","domain":"'+exD+'","question":"Select THREE...","selectCount":3,"options":["A","B","C","D","E"],"correct":[0,1,3],"explanation":"...","reference":"..."}]';
+
+  fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:10000,messages:[{role:'user',content:apiPrompt}]})
+  })
+  .then(function(res){if(!res.ok)return res.json().then(function(e){throw new Error(e.error&&e.error.message?e.error.message:'API error '+res.status);});return res.json();})
+  .then(function(data){
+    var raw=(data.content||[]).map(function(c){return c.text||'';}).join('');
+    var fence=String.fromCharCode(96,96,96);
+    var clean=raw.split(fence+'json').join('').split(fence).join('').trim();
+    var parsed=JSON.parse(clean);
+    if(!Array.isArray(parsed)||!parsed.length)throw new Error('Unexpected response format.');
+    S.quiz.questions=parsed;var qs=document.getElementById('quiz-screen');if(qs)qs.remove();
+    S.screen='quiz';render();if(S.settings.timer>0)startTimer();
+  })
+  .catch(function(e){S.screen='home';S.error=e.message||'Failed to generate questions.';render();});
 }
 
 // ============================================================
@@ -1278,5 +1815,7 @@ function startQuiz() {
 // ============================================================
 render();
 </script>
+
+
 </body>
 </html>
