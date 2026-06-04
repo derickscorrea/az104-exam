@@ -1386,40 +1386,24 @@ function generateLab() {
   if (!lab || !S.apiKey) return;
 
   var genBtn = document.getElementById('gen-lab-btn');
-  if (genBtn) { genBtn.disabled = true; genBtn.textContent = 'Generating...'; }
+  if (genBtn) { genBtn.disabled = true; genBtn.innerHTML = 'Generating...'; }
 
   var dom = DOMAINS.find(function(d){return d.id===lab.domain;}) || {full:lab.domain};
   var apiPrompt =
     'You are a senior Microsoft Azure instructor writing a hands-on AZ-104 lab guide.\n' +
-    'Lab: "' + lab.name + '" (Domain: ' + dom.full + ', Difficulty: ' + lab.difficulty + ', Duration: ' + lab.duration + ' min)\n\n' +
-    'Create a complete, practical lab guide a real Azure Administrator would follow.\n' +
-    'Include BOTH Azure Portal steps AND Azure CLI commands for each step.\n\n' +
-    'Return ONLY a raw JSON object (no markdown, no preamble) with this exact structure:\n' +
-    '{\n' +
-    '  "objective": "One sentence describing what the student will accomplish",\n' +
-    '  "scenario": "1-2 sentence real-world business context for why an admin would do this",\n' +
-    '  "prerequisites": ["item1", "item2", "item3"],\n' +
-    '  "steps": [\n' +
-    '    {\n' +
-    '      "title": "Step title",\n' +
-    '      "description": "Brief description of what this step does",\n' +
-    '      "portal": ["Sub-step 1: Navigate to...", "Sub-step 2: Click...", "Sub-step 3: ..."],\n' +
-    '      "cli": "az full-command --param value \\naz second-command --param value",\n' +
-    '      "note": "Optional warning or tip, or null"\n' +
-    '    }\n' +
-    '  ],\n' +
-    '  "validation": ["How to verify step 1 worked", "How to verify the whole lab worked"],\n' +
-    '  "cleanup": ["az group delete --name MyRG --yes --no-wait or portal equivalent"],\n' +
-    '  "keyPoints": ["Key Azure concept 1", "Key Azure concept 2", "Key Azure concept 3", "Key Azure concept 4"]\n' +
-    '}\n\n' +
-    'Requirements:\n' +
-    '- 5-8 steps for this lab\n' +
-    '- Portal sub-steps should be detailed enough to follow without screenshots\n' +
-    '- CLI commands must be real, working az or PowerShell commands\n' +
-    '- Use realistic names like "rg-az104-lab", "vm-web-01", "vnet-prod-eastus"\n' +
-    '- Include the resource group creation as the first step\n' +
-    '- Cleanup must remove all resources created in the lab\n' +
-    '- Key points should explain the underlying Azure concepts, not just repeat the steps';
+    'Lab: "' + lab.name + '" (Domain: ' + dom.full + ', Difficulty: ' + lab.difficulty + ', ' + lab.duration + ' min)\n\n' +
+    'Return ONLY a raw JSON object (no markdown, no extra text) with this structure:\n' +
+    '{"objective":"string","scenario":"string","prerequisites":["string"],' +
+    '"steps":[{"title":"string","description":"string","portal":["string"],"cli":"string or null","note":"string or null"}],' +
+    '"validation":["string"],"cleanup":["string"],"keyPoints":["string"]}\n\n' +
+    'Rules:\n' +
+    '- Exactly 5 steps (not more) to keep the response concise\n' +
+    '- Step 1 must create a resource group named "rg-az104-lab"\n' +
+    '- Portal array: 3-4 sub-steps each, enough detail to follow without screenshots\n' +
+    '- CLI: real working az commands; use newline between multiple commands\n' +
+    '- Use realistic resource names (rg-az104-lab, vm-web-01, vnet-prod-eastus, etc.)\n' +
+    '- 2 validation checks, 1-2 cleanup steps (az group delete), 4 key concepts\n' +
+    '- Keep each string under 200 characters to avoid truncation';
 
   fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -1431,7 +1415,7 @@ function generateLab() {
     },
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
-      max_tokens: 4000,
+      max_tokens: 6000,
       messages: [{role:'user', content: apiPrompt}]
     })
   })
@@ -1450,11 +1434,11 @@ function generateLab() {
   })
   .catch(function(e) {
     var genBtn2 = document.getElementById('gen-lab-btn');
-    if (genBtn2) { genBtn2.disabled = false; genBtn2.textContent = '&#9889; Try again'; }
+    if (genBtn2) { genBtn2.disabled = false; genBtn2.innerHTML = '&#9889; Try again'; }
     var errDiv = document.createElement('div');
     errDiv.className = 'err-box';
     errDiv.style.marginTop = '12px';
-    errDiv.textContent = 'Error: ' + (e.message || 'Unknown error');
+    errDiv.innerHTML = 'Error: ' + escHtml(e.message || 'Unknown error');
     if (genBtn2 && genBtn2.parentNode) genBtn2.parentNode.appendChild(errDiv);
   });
 }
