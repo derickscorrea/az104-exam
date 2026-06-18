@@ -547,6 +547,21 @@
     }
 
 
+
+    /* Memory aid box */
+    .memory-aid {
+      background: rgba(167,139,250,0.1);
+      border: 1px solid rgba(167,139,250,0.25);
+      border-radius: 8px; padding: 10px 14px;
+      font-size: 13px; color: var(--purple);
+      line-height: 1.65;
+    }
+    /* Print styles */
+    @media print {
+      #header, .btn, .flag-btn, #nav { display:none !important; }
+      body { background: white !important; color: black !important; }
+    }
+
     /* ======================================================
        LABS SECTION
        ====================================================== */
@@ -761,7 +776,7 @@ var DOMAINS = [
   { id:'identity',   name:'Identities & Governance', full:'Manage Azure Identities & Governance', pct:'20-25%', icon:'\uD83D\uDD10' },
   { id:'storage',    name:'Storage',                  full:'Implement & Manage Storage',           pct:'15-20%', icon:'\uD83D\uDDC4' },
   { id:'compute',    name:'Compute Resources',        full:'Deploy & Manage Azure Compute',        pct:'20-25%', icon:'\u2699\uFE0F' },
-  { id:'networking', name:'Virtual Networking',       full:'Configure & Manage Virtual Networking', pct:'25-30%', icon:'\uD83C\uDF10' },
+  { id:'networking', name:'Virtual Networking',       full:'Implement & Manage Virtual Networking',  pct:'15-20%', icon:'\uD83C\uDF10' },
   { id:'monitoring', name:'Monitoring & Backup',      full:'Monitor & Maintain Azure Resources',   pct:'10-15%', icon:'\uD83D\uDCCA' },
 ];
 
@@ -828,6 +843,79 @@ var LAB_LIST = [
   {id:'mon-08', domain:'monitoring',name:'Use Azure Advisor and implement cost optimisation',      duration:20, difficulty:'easy'},
 ];
 
+
+// Official AZ-104 study guide skills (April 2026)
+// https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-104
+var DOMAIN_SKILLS = {
+  identity: [
+    'Create and manage Microsoft Entra users and groups',
+    'Manage user and group properties and licenses',
+    'Manage external users and configure SSPR',
+    'Manage built-in Azure roles and RBAC',
+    'Assign roles at different scopes and interpret access assignments',
+    'Implement and manage Azure Policy',
+    'Configure resource locks (CanNotDelete and ReadOnly)',
+    'Apply and manage tags on resources',
+    'Manage resource groups and subscriptions',
+    'Configure management groups',
+    'Manage costs using alerts, budgets, and Azure Advisor',
+  ],
+  storage: [
+    'Configure Azure Storage firewalls and virtual networks',
+    'Create and use SAS tokens and stored access policies',
+    'Manage access keys and identity-based access for Azure Files',
+    'Create and configure storage accounts',
+    'Configure Azure Storage redundancy (LRS, ZRS, GRS, GZRS)',
+    'Configure object replication and storage account encryption',
+    'Use Azure Storage Explorer and AzCopy',
+    'Create and configure file shares in Azure Files',
+    'Create and configure containers in Azure Blob Storage',
+    'Configure storage tiers (Hot, Cool, Cold, Archive)',
+    'Configure soft delete, snapshots, lifecycle management, and blob versioning',
+  ],
+  compute: [
+    'Interpret and modify ARM templates and Bicep files',
+    'Deploy resources using ARM templates or Bicep',
+    'Create and configure virtual machines',
+    'Configure encryption at host for Azure VMs',
+    'Move VMs between resource groups, subscriptions, and regions',
+    'Manage VM sizes and disks',
+    'Deploy VMs to availability zones and availability sets',
+    'Deploy and configure Azure Virtual Machine Scale Sets',
+    'Create and manage Azure Container Registry',
+    'Provision containers using Azure Container Instances and Container Apps',
+    'Manage scaling for Container Instances and Container Apps',
+    'Provision and configure App Service plans',
+    'Configure scaling, TLS, custom DNS, backup, networking, and deployment slots for App Service',
+  ],
+  networking: [
+    'Create and configure virtual networks and subnets',
+    'Create and configure virtual network peering',
+    'Configure public IP addresses and user-defined routes',
+    'Troubleshoot network connectivity',
+    'Create and configure NSGs and application security groups',
+    'Evaluate effective security rules in NSGs',
+    'Implement Azure Bastion',
+    'Configure service endpoints and private endpoints for Azure PaaS',
+    'Configure Azure DNS',
+    'Configure internal and public load balancers',
+    'Troubleshoot load balancing',
+  ],
+  monitoring: [
+    'Interpret metrics in Azure Monitor',
+    'Configure log settings and query logs in Azure Monitor',
+    'Set up alert rules, action groups, and alert processing rules',
+    'Configure and interpret monitoring of VMs, storage, and networks using Azure Monitor Insights',
+    'Use Azure Network Watcher and Connection Monitor',
+    'Create Recovery Services vault and Azure Backup vault',
+    'Create and configure backup policies',
+    'Perform backup and restore operations using Azure Backup',
+    'Configure Azure Site Recovery for Azure resources',
+    'Perform a failover to a secondary region using Site Recovery',
+    'Configure and interpret backup reports and alerts',
+  ],
+};
+
 var DIFFICULTIES = [
   { id:'easy',   label:'Easy',   desc:'Definitions & concepts' },
   { id:'medium', label:'Medium', desc:'Practical scenarios' },
@@ -865,6 +953,7 @@ var S = {
   },
   currentLabId: null,
   history: lsGet('az104_history') ? JSON.parse(lsGet('az104_history')) : [],
+  cheatsheets: {},
   error: null,
 };
 
@@ -951,9 +1040,10 @@ function render() {
     {id:'labs',       label:'Labs',       icon:'&#129514;', badge: totalDone + '/' + LAB_LIST.length, dot: totalDone > 0},
     {id:'history',    label:'History',    icon:'&#128203;', dot: S.history.length > 0},
     {id:'analytics',  label:'Analytics',  icon:'&#128200;', dot: S.history.length > 0},
+    {id:'cheatsheet', label:'Cheat Sheet', icon:'&#128221;'},
   ].map(function(n) {
     var badgeHtml = n.badge ? ' <span style="font-size:10px;background:var(--green-dim);color:var(--green);padding:1px 7px;border-radius:10px;">' + n.badge + '</span>' : '';
-    return '<button class="nav-btn ' + (S.screen===n.id||S.screen==='lab_detail'&&n.id==='labs'?'active':'') + ' ' + (n.dot?'has-data':'') + '" onclick="go(\'' + n.id + '\')">' +
+    return '<button class="nav-btn ' + (S.screen===n.id||(S.screen==='lab_detail'&&n.id==='labs')?'active':'') + ' ' + (n.dot?'has-data':'') + '" onclick="go(\'' + n.id + '\')">' +
       '<span class="nav-dot"></span>' + n.icon + ' ' + n.label + badgeHtml + '</button>';
   }).join('');
 
@@ -961,7 +1051,8 @@ function render() {
     home:renderHome, loading:renderLoading,
     labs:renderLabs, lab_detail:renderLabDetail,
     results:renderResults, review:renderReview,
-    history:renderHistory, analytics:renderAnalytics
+    history:renderHistory, analytics:renderAnalytics,
+    cheatsheet:renderCheatSheet
   };
   document.getElementById('main').innerHTML = '<div class="fade-up">' + ((map[S.screen]||renderHome)()) + '</div>';
   attachMainEvents();
@@ -976,6 +1067,46 @@ function escHtml(s) {
 function diffBadge(d) {
   var map = {easy:'b-green', medium:'b-amber', hard:'b-red'};
   return '<span class="badge ' + (map[d]||'b-gray') + '" style="font-size:10px;">' + escHtml(d) + '</span>';
+}
+
+
+// ============================================================
+// DIFFICULTY CALIBRATION
+// ============================================================
+function getDifficultyRec() {
+  var h = S.history;
+  if (h.length < 2) return null;
+  var recent = h.slice(-3);
+  var avg = Math.round(recent.reduce(function(a,b){return a+b.score;},0) / recent.length);
+  var cur = S.settings.difficulty;
+  if (avg >= 80 && cur !== 'hard')   return {suggest:'hard',  avg:avg, msg:'You averaged ' + avg + '% in your last sessions. Ready for Hard?'};
+  if (avg < 55  && cur !== 'easy')   return {suggest:'easy',  avg:avg, msg:'You averaged ' + avg + '% recently. Try Easy to build confidence.'};
+  if (avg >= 65 && avg < 80 && cur === 'easy') return {suggest:'medium', avg:avg, msg:'You averaged ' + avg + '% on Easy. Ready to step up to Medium?'};
+  return null;
+}
+
+// ============================================================
+// WEAK AREA DRILL
+// ============================================================
+function startWeakDrill() {
+  var domPerf = {};
+  DOMAINS.forEach(function(d){ domPerf[d.id]={correct:0,total:0}; });
+  S.history.forEach(function(s){
+    if(!s.domainBreakdown)return;
+    Object.keys(s.domainBreakdown).forEach(function(id){
+      var stat=s.domainBreakdown[id];
+      if(domPerf[id]){domPerf[id].correct+=stat.correct;domPerf[id].total+=stat.total;}
+    });
+  });
+  var scored=Object.keys(domPerf).filter(function(id){return domPerf[id].total>0;}).map(function(id){
+    return {id:id,pct:Math.round(domPerf[id].correct/domPerf[id].total*100)};
+  }).sort(function(a,b){return a.pct-b.pct;});
+  if(!scored.length){S.error='No history yet. Complete some sessions first.';render();return;}
+  var weak=scored[0];
+  S.settings.domains=[weak.id];
+  S.settings.count=10;
+  saveSettings();
+  startQuiz();
 }
 
 // ============================================================
@@ -1414,7 +1545,7 @@ function generateLab() {
       'anthropic-dangerous-direct-browser-access': 'true'
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-6',
+      model: 'claude-opus-4-8',
       max_tokens: 6000,
       messages: [{role:'user', content: apiPrompt}]
     })
@@ -1484,7 +1615,8 @@ function renderQuiz() {
   if (showFeedback) {
     var ok2 = isCorrect(q.current);
     var ref = question.reference ? '<span class="ref-link">&#128218; Reference: '+escHtml(question.reference)+'</span>' : '';
-    expHtml = '<div class="explanation mb-4"><strong>'+(ok2?'&#9989; Correct!':'&#10060; Incorrect.')+'</strong> '+escHtml(question.explanation)+ref+'</div>';
+    var memAid = question.memoryAid ? '<div class="memory-aid">&#129504; <strong>Memory aid:</strong> ' + escHtml(question.memoryAid) + '</div>' : '';
+    expHtml = '<div class="explanation mb-4"><strong>'+(ok2?'&#9989; Correct!':'&#10060; Incorrect.')+'</strong> '+escHtml(question.explanation)+ref+'</div>' + memAid;
   }
   var actHtml = '';
   if (!answered) {
@@ -1633,6 +1765,7 @@ function renderReview() {
       '<p style="font-size:14px;line-height:1.7;margin-bottom:12px;">'+escHtml(question.question)+'</p>' +
       ansDetail +
       '<div class="explanation">'+escHtml(question.explanation)+ref+'</div>' +
+      (question.memoryAid ? '<div class="memory-aid" style="margin-top:8px;">&#129504; <strong>Memory aid:</strong> ' + escHtml(question.memoryAid) + '</div>' : '') +
     '</div>';
   }).join('');
   return '<div class="flex justify-between items-center mb-4"><h1 style="font-size:20px;font-weight:800;">Answer Review</h1><button class="btn btn-ghost" onclick="go(\'results\')" style="font-size:12px;padding:8px 14px;">&larr; Back to results</button></div>' +
@@ -1704,6 +1837,18 @@ function attachMainEvents() {
   document.querySelectorAll('[data-timer]').forEach(function(el){el.addEventListener('click',function(){S.settings.timer=parseInt(el.dataset.timer);saveSettings();render();});});
   var eT=document.getElementById('exam-tog');if(eT)eT.addEventListener('change',function(){S.settings.examMode=eT.checked;saveSettings();});
   var sB=document.getElementById('start-btn');if(sB)sB.addEventListener('click',startQuiz);
+  var recBtn=document.getElementById('apply-rec-btn');
+  if(recBtn)recBtn.addEventListener('click',function(){S.settings.difficulty=recBtn.dataset.suggest;saveSettings();render();});
+
+  // Cheat sheet domain selection
+  document.querySelectorAll('[data-cs-domain]').forEach(function(el){
+    el.addEventListener('click',function(){
+      S.settings.cheatDomain=el.dataset.csDomain;
+      render();
+    });
+  });
+  var genCsBtn=document.getElementById('gen-cs-btn');
+  if(genCsBtn)genCsBtn.addEventListener('click',generateCheatSheet);
 
   // Lab events
   document.querySelectorAll('[data-domain-toggle]').forEach(function(el){
@@ -1767,7 +1912,11 @@ function startQuiz(){
   var domainNames=selDomains.map(function(d){return d.full;}).join(', ');
   var diffGuide={easy:'Questions should test definitions, basic concepts, and what each service does.',medium:'Use practical real-world scenarios. Require the user to choose between services or configurations.',hard:'Focus on troubleshooting broken setups, cost-optimisation, complex architectures, and CLI nuances.'};
   var n=S.settings.count; var nSingle=Math.round(n*0.50); var nMulti=Math.round(n*0.30); var nDd=n-nSingle-nMulti; var exD=selDomains[0].id;
-  var apiPrompt='You are a senior Microsoft Azure instructor writing AZ-104 exam practice questions.\n'+
+  var skillsForDomains = selDomains.map(function(d){
+    var skills = DOMAIN_SKILLS[d.id] || [];
+    return d.name + ': ' + skills.slice(0,6).join('; ');
+  }).join(' | ');
+  var apiPrompt='You are a senior Microsoft Azure instructor writing AZ-104 exam practice questions aligned to the OFFICIAL Microsoft study guide (April 2026).\n'+
     'Generate exactly '+n+' questions: '+nSingle+' single-answer, '+nMulti+' multi-select, '+nDd+' drag-and-drop.\n'+
     'Domains: '+domainNames+'.\nDifficulty: '+S.settings.difficulty+' - '+(diffGuide[S.settings.difficulty]||diffGuide.medium)+'\n\n'+
     'TYPES:\n1. type:"single" - 4 options, correct is a number 0-3.\n2. type:"multi" - 5 options, selectCount correct (2 or 3), correct is an array. Say "Select TWO/THREE" in question.\n3. type:"drag_drop" - 5 options, selectCount correct (2 or 3), correct is array. Say "Select TWO/THREE that apply".\n\n'+
@@ -1779,7 +1928,7 @@ function startQuiz(){
   fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
-    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:10000,messages:[{role:'user',content:apiPrompt}]})
+    body:JSON.stringify({model:'claude-opus-4-8',max_tokens:10000,messages:[{role:'user',content:apiPrompt}]})
   })
   .then(function(res){if(!res.ok)return res.json().then(function(e){throw new Error(e.error&&e.error.message?e.error.message:'API error '+res.status);});return res.json();})
   .then(function(data){
@@ -1792,6 +1941,249 @@ function startQuiz(){
     S.screen='quiz';render();if(S.settings.timer>0)startTimer();
   })
   .catch(function(e){S.screen='home';S.error=e.message||'Failed to generate questions.';render();});
+}
+
+
+// ============================================================
+// PRINT REPORT
+// ============================================================
+function printReport() {
+  var q = S.quiz;
+  var correct = 0;
+  for (var ri=0;ri<q.questions.length;ri++){if(isCorrect(ri))correct++;}
+  var total   = q.questions.length;
+  var score   = Math.round((correct/total)*100);
+  var passed  = score >= PASS_PCT;
+  var dur     = (q.endTime&&q.startTime)?Math.round((q.endTime-q.startTime)/1000):0;
+  var domainStats = {};
+  q.questions.forEach(function(qu,i){if(!domainStats[qu.domain])domainStats[qu.domain]={correct:0,total:0};domainStats[qu.domain].total++;if(isCorrect(i))domainStats[qu.domain].correct++;});
+
+  var barRows = Object.keys(domainStats).map(function(domId){
+    var stat=domainStats[domId]; var dom=DOMAINS.find(function(d){return d.id===domId;})||{name:domId};
+    var pct=Math.round((stat.correct/stat.total)*100);
+    return '<tr><td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;">' + escHtml(dom.name) + '</td>' +
+      '<td style="padding:6px 10px;border-bottom:1px solid #eee;"><div style="background:#eee;border-radius:4px;height:12px;width:200px;">' +
+      '<div style="background:' + (pct>=70?'#0078D4':'#EF4444') + ';height:12px;border-radius:4px;width:' + pct + '%;"></div></div></td>' +
+      '<td style="padding:6px 10px;border-bottom:1px solid #eee;font-size:13px;font-weight:700;color:' + (pct>=70?'#0078D4':'#EF4444') + ';">' + pct + '%</td></tr>';
+  }).join('');
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>AZ-104 Exam Report</title>' +
+    '<style>body{font-family:system-ui,sans-serif;padding:40px;max-width:700px;margin:0 auto;color:#111;}' +
+    'h1{font-size:22px;margin-bottom:4px;}' +
+    '.score{font-size:72px;font-weight:800;color:' + (passed?'#0078D4':'#EF4444') + ';line-height:1;margin:16px 0 4px;}' +
+    '.verdict{font-size:16px;font-weight:700;color:' + (passed?'#0078D4':'#EF4444') + ';margin-bottom:24px;}' +
+    '.meta{display:flex;gap:24px;margin-bottom:24px;flex-wrap:wrap;}' +
+    '.meta-item{background:#f5f7fa;border-radius:8px;padding:12px 16px;min-width:100px;}' +
+    '.meta-num{font-size:22px;font-weight:800;}' +
+    '.meta-lbl{font-size:11px;color:#666;letter-spacing:1px;text-transform:uppercase;}' +
+    'table{width:100%;border-collapse:collapse;margin-top:8px;}' +
+    'h2{font-size:14px;text-transform:uppercase;letter-spacing:1px;color:#666;margin:24px 0 8px;}' +
+    '.footer{margin-top:32px;font-size:11px;color:#999;border-top:1px solid #eee;padding-top:12px;}' +
+    '@media print{body{padding:20px;}}' +
+    '</style></head><body>' +
+    '<div style="display:flex;justify-content:space-between;align-items:flex-start;"><div>' +
+    '<h1>AZ-104 Practice Exam Report</h1>' +
+    '<div style="font-size:13px;color:#666;">' + new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}) + '</div>' +
+    '</div><div style="text-align:right;font-size:12px;color:#999;">Microsoft Azure Administrator</div></div>' +
+    '<div class="score">' + score + '%</div>' +
+    '<div class="verdict">' + (passed?'PASS - Exceeds passing threshold (700/1000)':'FAIL - Below passing threshold (700/1000)') + '</div>' +
+    '<div class="meta">' +
+    '<div class="meta-item"><div class="meta-num">' + correct + '</div><div class="meta-lbl">Correct</div></div>' +
+    '<div class="meta-item"><div class="meta-num">' + (total-correct) + '</div><div class="meta-lbl">Incorrect</div></div>' +
+    '<div class="meta-item"><div class="meta-num">' + total + '</div><div class="meta-lbl">Questions</div></div>' +
+    '<div class="meta-item"><div class="meta-num">' + Math.floor(dur/60) + 'm ' + String(dur%60).padStart(2,'0') + 's</div><div class="meta-lbl">Time taken</div></div>' +
+    '<div class="meta-item"><div class="meta-num">' + escHtml(S.settings.difficulty) + '</div><div class="meta-lbl">Difficulty</div></div>' +
+    '</div>' +
+    '<h2>Domain Breakdown</h2>' +
+    '<table>' + barRows + '</table>' +
+    '<div class="footer">Generated by AZ-104 Practice Tool &middot; Based on Microsoft official study guide (April 2026) &middot; Passing score: 700/1000 (70%)</div>' +
+    '</body></html>';
+
+  var win = window.open('','_blank','width=800,height=700');
+  if (win) { win.document.write(html); win.document.close(); win.focus(); setTimeout(function(){ win.print(); }, 400); }
+}
+
+// ============================================================
+// CHEAT SHEET SCREEN
+// ============================================================
+function renderCheatSheet() {
+  var s = S.settings;
+
+  var domainBtns = DOMAINS.map(function(d) {
+    var hasCached = !!S.cheatsheets[d.id];
+    var isActive  = s.cheatDomain === d.id;
+    return '<button class="toggle-opt ' + (isActive?'active':'') + '" data-cs-domain="' + d.id + '" style="position:relative;">' +
+      d.icon + ' ' + escHtml(d.name) +
+      (hasCached?' <span style="font-size:9px;background:var(--green-dim);color:var(--green);padding:1px 5px;border-radius:8px;margin-left:4px;">saved</span>':'') +
+    '</button>';
+  }).join('');
+
+  var activeDom = s.cheatDomain || null;
+  var cached    = activeDom ? S.cheatsheets[activeDom] : null;
+  var parsed    = null;
+  if (cached) { try { parsed = JSON.parse(cached); } catch(e){ parsed = null; } }
+
+  var bodyHtml = '';
+  if (!activeDom) {
+    bodyHtml = '<div class="empty"><div class="empty-icon">&#128221;</div>' +
+      '<div class="empty-text">Select a domain above to generate a cheat sheet.<br>Each cheat sheet is saved locally so you only generate it once.</div></div>';
+  } else if (!parsed) {
+    bodyHtml = '<div class="generate-lab-card">' +
+      '<div style="font-size:40px;margin-bottom:14px;">&#128221;</div>' +
+      '<div style="font-size:16px;font-weight:700;margin-bottom:8px;">Generate Cheat Sheet</div>' +
+      '<div class="text-sm text-2" style="max-width:420px;margin:0 auto 20px;">Claude will generate a quick-reference card for <strong>' +
+      escHtml((DOMAINS.find(function(d){return d.id===activeDom;})||{name:activeDom}).name) +
+      '</strong> covering all official exam skills, key CLI commands, mnemonics, and common gotchas.</div>' +
+      (!S.apiKey ?
+        '<div class="err-box" style="max-width:400px;margin:0 auto;">API key required. Set it on the Home screen.</div>' :
+        '<button class="btn btn-primary" id="gen-cs-btn" style="font-size:14px;padding:12px 28px;">&#9889; Generate Cheat Sheet</button>'
+      ) +
+    '</div>';
+  } else {
+    bodyHtml = renderParsedCheatSheet(parsed, activeDom);
+  }
+
+  return '<div class="flex justify-between items-center mb-4" style="flex-wrap:wrap;gap:10px;">' +
+    '<div><h1 style="font-size:20px;font-weight:800;margin-bottom:4px;">&#128221; Cheat Sheets</h1>' +
+    '<div class="text-sm text-2">Quick-reference cards based on the official AZ-104 study guide (April 2026)</div></div>' +
+    (parsed ? '<button class="btn btn-ghost" onclick="printCheatSheet(&#39;' + activeDom + '&#39;)" style="font-size:12px;padding:8px 14px;">&#128438; Print</button>' : '') +
+    '</div>' +
+    '<div class="card-sm mb-4"><div class="sec-label" style="margin-bottom:8px;">Select domain</div>' +
+    '<div class="toggle-group" style="flex-wrap:wrap;">' + domainBtns + '</div></div>' +
+    bodyHtml;
+}
+
+function renderParsedCheatSheet(p, domId) {
+  var dom = DOMAINS.find(function(d){return d.id===domId;})||{name:domId,icon:''};
+  var html = '<div class="card mb-3" style="border-color:rgba(0,120,212,0.3);background:rgba(0,120,212,0.05);">' +
+    '<div style="font-size:11px;color:var(--t3);margin-bottom:6px;">OFFICIAL AZ-104 STUDY GUIDE &middot; ' + escHtml(dom.name.toUpperCase()) + '</div>' +
+    '<div style="font-size:16px;font-weight:800;">' + dom.icon + ' ' + escHtml(p.title||dom.name) + ' &mdash; Quick Reference</div>' +
+  '</div>';
+
+  if (p.sections && p.sections.length) {
+    p.sections.forEach(function(sec) {
+      html += '<div class="lab-section-card">' +
+        '<div class="lab-section-title">' + escHtml(sec.title) + '</div>' +
+        '<table style="width:100%;border-collapse:collapse;">';
+      (sec.rows||sec.items||[]).forEach(function(row) {
+        html += '<tr>' +
+          '<td class="font-mono" style="padding:7px 10px;border-bottom:1px solid var(--border);font-size:12px;font-weight:600;color:var(--primary-lt);white-space:nowrap;vertical-align:top;width:30%;">' + escHtml(row.term||row.key||'') + '</td>' +
+          '<td style="padding:7px 10px;border-bottom:1px solid var(--border);font-size:13px;color:var(--t2);vertical-align:top;">' + escHtml(row.def||row.definition||row.value||'') + '</td>' +
+        '</tr>';
+      });
+      html += '</table></div>';
+    });
+  }
+
+  if (p.commands && p.commands.length) {
+    html += '<div class="lab-section-card"><div class="lab-section-title">&#9112; Key CLI Commands</div>';
+    p.commands.forEach(function(cmd) {
+      html += '<div style="margin-bottom:10px;">' +
+        '<div style="font-size:11px;color:var(--t3);margin-bottom:4px;">' + escHtml(cmd.desc||cmd.description||'') + '</div>' +
+        '<div class="code-block" style="font-size:11px;padding:8px 12px;">' + escHtml(cmd.cmd||cmd.command||'') + '</div>' +
+      '</div>';
+    });
+    html += '</div>';
+  }
+
+  if (p.mnemonics && p.mnemonics.length) {
+    html += '<div class="lab-section-card"><div class="lab-section-title">&#129504; Mnemonics & Memory Aids</div>';
+    p.mnemonics.forEach(function(m) {
+      html += '<div class="memory-aid" style="margin-bottom:8px;">' + escHtml(m) + '</div>';
+    });
+    html += '</div>';
+  }
+
+  if (p.gotchas && p.gotchas.length) {
+    html += '<div class="lab-section-card"><div class="lab-section-title">&#9888;&#65039; Common Gotchas &amp; Exam Traps</div>';
+    p.gotchas.forEach(function(g) {
+      html += '<div class="checklist-item"><span style="color:var(--amber);">&#9888;</span><span>' + escHtml(g) + '</span></div>';
+    });
+    html += '</div>';
+  }
+
+  return html;
+}
+
+function generateCheatSheet() {
+  var domId = S.settings.cheatDomain;
+  if (!domId || !S.apiKey) return;
+  var dom = DOMAINS.find(function(d){return d.id===domId;})||{name:domId,full:domId};
+  var skills = (DOMAIN_SKILLS[domId]||[]).join('; ');
+
+  var btn = document.getElementById('gen-cs-btn');
+  if (btn) { btn.disabled=true; btn.innerHTML='Generating...'; }
+
+  var apiPrompt = 'You are a senior Microsoft Azure instructor writing a cheat sheet for AZ-104 candidates. Domain: ' + dom.full + '. Official exam skills to cover: ' + skills + '. Return ONLY a raw JSON object (no markdown) with this structure: {"title":"string","sections":[{"title":"string","rows":[{"term":"string","def":"string"}]}],"commands":[{"cmd":"string","desc":"string"}],"mnemonics":["string"],"gotchas":["string"]} Rules: 3-5 sections covering official skills (e.g. Key Services, Limits and Tiers, Comparison Tables). Each section: 4-8 rows of term/definition pairs, concise and exam-focused. 5-8 real az CLI commands that appear in the exam. 3-5 mnemonics or memorable analogies for hard-to-remember concepts. 4-6 gotchas: tricky exam traps, common misconceptions, or surprising behaviours. Keep all strings under 150 characters. Only include content mapping directly to the official study guide skills above.';
+  fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:apiPrompt}]})
+  })
+  .then(function(res){if(!res.ok)return res.json().then(function(e){throw new Error(e.error&&e.error.message?e.error.message:'API error '+res.status);});return res.json();})
+  .then(function(data){
+    var raw=(data.content||[]).map(function(c2){return c2.text||'';}).join('');
+    var fence=String.fromCharCode(96,96,96);
+    var clean=raw.split(fence+'json').join('').split(fence).join('').trim();
+    var parsed=JSON.parse(clean);
+    if(!parsed.sections)throw new Error('Invalid cheat sheet format.');
+    S.cheatsheets[domId]=JSON.stringify(parsed);
+    render();
+  })
+  .catch(function(e){
+    var btn2=document.getElementById('gen-cs-btn');
+    if(btn2){btn2.disabled=false;btn2.innerHTML='&#9889; Try again';}
+    var errDiv=document.createElement('div');
+    errDiv.className='err-box';errDiv.style.marginTop='12px';
+    errDiv.innerHTML='Error: '+escHtml(e.message||'Unknown error');
+    if(btn2&&btn2.parentNode)btn2.parentNode.appendChild(errDiv);
+  });
+}
+
+function printCheatSheet(domId) {
+  var cached = S.cheatsheets[domId];
+  if (!cached) return;
+  var p; try{p=JSON.parse(cached);}catch(e){return;}
+  var dom = DOMAINS.find(function(d){return d.id===domId;})||{name:domId,icon:''};
+
+  var sectionsHtml = '';
+  if (p.sections) {
+    p.sections.forEach(function(sec) {
+      sectionsHtml += '<h2 style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#666;margin:18px 0 6px;">' + sec.title + '</h2>' +
+        '<table style="width:100%;border-collapse:collapse;margin-bottom:8px;">';
+      (sec.rows||sec.items||[]).forEach(function(row){
+        sectionsHtml += '<tr><td style="padding:5px 8px;border:1px solid #ddd;font-family:monospace;font-size:12px;font-weight:700;color:#0078D4;width:28%;vertical-align:top;">' + (row.term||'') + '</td><td style="padding:5px 8px;border:1px solid #ddd;font-size:12px;vertical-align:top;">' + (row.def||row.definition||'') + '</td></tr>';
+      });
+      sectionsHtml += '</table>';
+    });
+  }
+  if (p.mnemonics && p.mnemonics.length) {
+    sectionsHtml += '<h2 style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#666;margin:18px 0 6px;">Memory Aids</h2>';
+    p.mnemonics.forEach(function(m){sectionsHtml += '<div style="background:#f0f4ff;border-left:3px solid #0078D4;padding:6px 10px;margin-bottom:6px;font-size:12px;">' + m + '</div>';});
+  }
+  if (p.gotchas && p.gotchas.length) {
+    sectionsHtml += '<h2 style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#666;margin:18px 0 6px;">Exam Gotchas</h2>';
+    p.gotchas.forEach(function(g){sectionsHtml += '<div style="background:#fff8e6;border-left:3px solid #F59E0B;padding:6px 10px;margin-bottom:6px;font-size:12px;">' + g + '</div>';});
+  }
+  if (p.commands && p.commands.length) {
+    sectionsHtml += '<h2 style="font-size:13px;text-transform:uppercase;letter-spacing:1px;color:#666;margin:18px 0 6px;">Key CLI Commands</h2>';
+    p.commands.forEach(function(cmd){sectionsHtml += '<div style="margin-bottom:6px;"><div style="font-size:11px;color:#666;margin-bottom:2px;">' + (cmd.desc||'') + '</div><div style="background:#0A0E1A;color:#A8C7F8;font-family:monospace;font-size:11px;padding:5px 8px;border-radius:4px;">' + (cmd.cmd||'') + '</div></div>';});
+  }
+
+  var html = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>AZ-104 Cheat Sheet - ' + dom.name + '</title>' +
+    '<style>body{font-family:system-ui,sans-serif;padding:30px;max-width:900px;margin:0 auto;color:#111;}' +
+    '@media print{body{padding:15px;}}' +
+    '</style></head><body>' +
+    '<div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #0078D4;padding-bottom:10px;margin-bottom:16px;">' +
+    '<div><div style="font-size:18px;font-weight:800;">' + dom.icon + ' AZ-104 Cheat Sheet &mdash; ' + dom.name + '</div>' +
+    '<div style="font-size:11px;color:#666;">Based on Microsoft official study guide (April 2026) &middot; Passing score: 700/1000</div></div>' +
+    '<div style="font-size:11px;color:#999;">' + new Date().toLocaleDateString() + '</div></div>' +
+    sectionsHtml +
+    '<div style="margin-top:20px;font-size:10px;color:#999;border-top:1px solid #eee;padding-top:8px;">AZ-104 Practice Tool &middot; Study guide: learn.microsoft.com/credentials/certifications/resources/study-guides/az-104</div>' +
+    '</body></html>';
+
+  var win=window.open('','_blank','width=900,height=700');
+  if(win){win.document.write(html);win.document.close();win.focus();setTimeout(function(){win.print();},400);}
 }
 
 // ============================================================
