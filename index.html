@@ -1937,6 +1937,36 @@ function startQuiz(){
     var clean=raw.split(fence+'json').join('').split(fence).join('').trim();
     var parsed=JSON.parse(clean);
     if(!Array.isArray(parsed)||!parsed.length)throw new Error('Unexpected response format.');
+    // Fix 1: use correct.length as source of truth for selectCount
+    // Fix 2: shuffle options while remapping correct indices so answers aren't always on top
+    parsed = parsed.map(function(q){
+      if((q.type==='multi'||q.type==='drag_drop')&&Array.isArray(q.correct)&&q.correct.length>0){
+        q.selectCount=q.correct.length;
+      }
+      // Shuffle options for ALL question types and remap correct index/indices
+      if(Array.isArray(q.options)&&q.options.length>1){
+        // Build index map: newPos -> oldPos
+        var indices=q.options.map(function(_,i){return i;});
+        // Fisher-Yates shuffle
+        for(var i=indices.length-1;i>0;i--){
+          var j=Math.floor(Math.random()*(i+1));
+          var tmp=indices[i];indices[i]=indices[j];indices[j]=tmp;
+        }
+        // Reorder options
+        var newOptions=indices.map(function(oldIdx){return q.options[oldIdx];});
+        // Build reverse map: oldIdx -> newIdx
+        var oldToNew={};
+        indices.forEach(function(oldIdx,newIdx){oldToNew[oldIdx]=newIdx;});
+        // Remap correct
+        if(typeof q.correct==='number'){
+          q.correct=oldToNew[q.correct];
+        } else if(Array.isArray(q.correct)){
+          q.correct=q.correct.map(function(oldIdx){return oldToNew[oldIdx];});
+        }
+        q.options=newOptions;
+      }
+      return q;
+    });
     S.quiz.questions=parsed;var qs=document.getElementById('quiz-screen');if(qs)qs.remove();
     S.screen='quiz';render();if(S.settings.timer>0)startTimer();
   })
