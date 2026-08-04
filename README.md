@@ -1,1 +1,1 @@
-# az104-exam
+# AZ305 - Microsoft Azure Solutions Architect Expert
