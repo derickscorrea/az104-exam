@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AZ-104 · Practice Exam</title>
+  <title>AZ-305 · Practice Exam</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -759,8 +759,8 @@
     <div class="logo-mark">
       <svg viewBox="0 0 18 18"><path d="M1 9.5L5 2l4 7.5L13 2l4 7.5-4 7.5-4-7.5L5 17z"/></svg>
     </div>
-    <span class="logo-name">AZ-104</span>
-    <span class="logo-tag">PRACTICE</span>
+    <span class="logo-name">AZ-305</span>
+    <span class="logo-tag">ARCHITECT</span>
   </div>
   <nav id="nav"></nav>
 </header>
@@ -773,146 +773,119 @@
 // DOMAINS
 // ============================================================
 var DOMAINS = [
-  { id:'identity',   name:'Identities & Governance', full:'Manage Azure Identities & Governance', pct:'20-25%', icon:'\uD83D\uDD10' },
-  { id:'storage',    name:'Storage',                  full:'Implement & Manage Storage',           pct:'15-20%', icon:'\uD83D\uDDC4' },
-  { id:'compute',    name:'Compute Resources',        full:'Deploy & Manage Azure Compute',        pct:'20-25%', icon:'\u2699\uFE0F' },
-  { id:'networking', name:'Virtual Networking',       full:'Implement & Manage Virtual Networking',  pct:'15-20%', icon:'\uD83C\uDF10' },
-  { id:'monitoring', name:'Monitoring & Backup',      full:'Monitor & Maintain Azure Resources',   pct:'10-15%', icon:'\uD83D\uDCCA' },
+  { id:'identity',       name:'Identity, Governance & Monitoring', full:'Design identity, governance, and monitoring solutions', pct:'25-30%', icon:'\uD83D\uDD10' },
+  { id:'storage',        name:'Data Storage Solutions',            full:'Design data storage solutions',                         pct:'20-25%', icon:'\uD83D\uDDC4' },
+  { id:'continuity',     name:'Business Continuity',               full:'Design business continuity solutions',                  pct:'15-20%', icon:'\uD83D\uDEE1\uFE0F' },
+  { id:'infrastructure', name:'Infrastructure Solutions',          full:'Design infrastructure solutions',                       pct:'30-35%', icon:'\uD83C\uDFD7\uFE0F' },
 ];
 
 // ============================================================
 // LABS LIST  (50 hands-on labs across all 5 domains)
 // ============================================================
 var LAB_LIST = [
-  // Identity & Governance
-  {id:'iden-01',domain:'identity',  name:'Create and manage Azure AD users and groups',              duration:30, difficulty:'easy'},
-  {id:'iden-02',domain:'identity',  name:'Configure Azure RBAC role assignments',                    duration:45, difficulty:'medium'},
-  {id:'iden-03',domain:'identity',  name:'Create and configure management groups',                   duration:20, difficulty:'easy'},
-  {id:'iden-04',domain:'identity',  name:'Implement and manage Azure Policy',                        duration:35, difficulty:'medium'},
-  {id:'iden-05',domain:'identity',  name:'Configure resource locks (CanNotDelete / ReadOnly)',       duration:20, difficulty:'easy'},
-  {id:'iden-06',domain:'identity',  name:'Apply and manage resource tags at scale',                  duration:25, difficulty:'easy'},
-  {id:'iden-07',domain:'identity',  name:'Configure Azure Blueprints',                               duration:45, difficulty:'hard'},
-  {id:'iden-08',domain:'identity',  name:'Manage Azure subscriptions and cost management',           duration:30, difficulty:'medium'},
-  {id:'iden-09',domain:'identity',  name:'Configure Azure AD Privileged Identity Management (PIM)', duration:45, difficulty:'hard'},
-  {id:'iden-10',domain:'identity',  name:'Set up Multi-Factor Authentication (MFA) policies',       duration:30, difficulty:'medium'},
-  // Storage
-  {id:'stor-01',domain:'storage',   name:'Create and configure Azure Storage accounts',              duration:30, difficulty:'easy'},
-  {id:'stor-02',domain:'storage',   name:'Configure blob storage containers and access tiers',       duration:30, difficulty:'easy'},
-  {id:'stor-03',domain:'storage',   name:'Generate and manage SAS tokens',                           duration:25, difficulty:'medium'},
-  {id:'stor-04',domain:'storage',   name:'Configure Azure Files and create file shares',             duration:30, difficulty:'medium'},
-  {id:'stor-05',domain:'storage',   name:'Set up Azure File Sync',                                   duration:45, difficulty:'hard'},
-  {id:'stor-06',domain:'storage',   name:'Configure storage replication (LRS / GRS / ZRS)',         duration:20, difficulty:'easy'},
-  {id:'stor-07',domain:'storage',   name:'Implement lifecycle management policies',                  duration:25, difficulty:'medium'},
-  {id:'stor-08',domain:'storage',   name:'Secure storage with firewalls and private endpoints',     duration:35, difficulty:'medium'},
-  {id:'stor-09',domain:'storage',   name:'Configure immutable blob storage policies',               duration:25, difficulty:'hard'},
-  {id:'stor-10',domain:'storage',   name:'Import and export data with Azure Data Box',              duration:20, difficulty:'medium'},
-  // Compute
-  {id:'comp-01',domain:'compute',   name:'Deploy and configure a Windows Virtual Machine',           duration:45, difficulty:'easy'},
-  {id:'comp-02',domain:'compute',   name:'Deploy and configure a Linux Virtual Machine',             duration:45, difficulty:'easy'},
-  {id:'comp-03',domain:'compute',   name:'Configure VM availability sets and zones',                 duration:30, difficulty:'medium'},
-  {id:'comp-04',domain:'compute',   name:'Configure Virtual Machine Scale Sets (VMSS)',              duration:45, difficulty:'medium'},
-  {id:'comp-05',domain:'compute',   name:'Deploy an Azure App Service web app',                     duration:30, difficulty:'easy'},
-  {id:'comp-06',domain:'compute',   name:'Configure App Service deployment slots and autoscaling',  duration:40, difficulty:'medium'},
-  {id:'comp-07',domain:'compute',   name:'Deploy a container to Azure Container Instances (ACI)',    duration:30, difficulty:'medium'},
-  {id:'comp-08',domain:'compute',   name:'Create and manage an Azure Kubernetes Service (AKS) cluster', duration:60, difficulty:'hard'},
-  {id:'comp-09',domain:'compute',   name:'Configure Azure VM Backup, snapshots, and restore',       duration:45, difficulty:'medium'},
-  {id:'comp-10',domain:'compute',   name:'Manage VM disks, attach data disks, and resize',          duration:30, difficulty:'easy'},
-  {id:'comp-11',domain:'compute',   name:'Configure VM extensions and custom script extension',     duration:30, difficulty:'medium'},
-  {id:'comp-12',domain:'compute',   name:'Deploy infrastructure with ARM templates and Bicep',      duration:45, difficulty:'hard'},
-  // Networking
-  {id:'net-01', domain:'networking',name:'Create and configure a Virtual Network (VNet)',            duration:30, difficulty:'easy'},
-  {id:'net-02', domain:'networking',name:'Configure Network Security Groups (NSGs) and rules',      duration:30, difficulty:'medium'},
-  {id:'net-03', domain:'networking',name:'Configure VNet peering (same region and global)',         duration:35, difficulty:'medium'},
-  {id:'net-04', domain:'networking',name:'Configure Azure DNS zones and custom records',            duration:30, difficulty:'medium'},
-  {id:'net-05', domain:'networking',name:'Deploy an Azure Load Balancer (Standard SKU)',            duration:45, difficulty:'medium'},
-  {id:'net-06', domain:'networking',name:'Configure an Application Gateway with WAF',               duration:60, difficulty:'hard'},
-  {id:'net-07', domain:'networking',name:'Set up a VPN Gateway (Point-to-Site connection)',         duration:60, difficulty:'hard'},
-  {id:'net-08', domain:'networking',name:'Configure Azure Firewall and DNAT rules',                 duration:45, difficulty:'hard'},
-  {id:'net-09', domain:'networking',name:'Configure User Defined Routes (UDR) and route tables',   duration:30, difficulty:'medium'},
-  {id:'net-10', domain:'networking',name:'Set up Azure Bastion for secure VM access',              duration:30, difficulty:'medium'},
-  {id:'net-11', domain:'networking',name:'Configure Network Watcher and flow logs',                duration:30, difficulty:'medium'},
-  {id:'net-12', domain:'networking',name:'Configure Azure NAT Gateway for outbound traffic',       duration:25, difficulty:'easy'},
-  // Monitoring & Backup
-  {id:'mon-01', domain:'monitoring',name:'Configure Azure Monitor and platform metrics',            duration:30, difficulty:'easy'},
-  {id:'mon-02', domain:'monitoring',name:'Create and configure Log Analytics workspaces',           duration:30, difficulty:'medium'},
-  {id:'mon-03', domain:'monitoring',name:'Configure metric alerts and action groups',               duration:30, difficulty:'medium'},
-  {id:'mon-04', domain:'monitoring',name:'Set up VM Insights and Connection Monitor',              duration:35, difficulty:'medium'},
-  {id:'mon-05', domain:'monitoring',name:'Configure Azure Backup vault and policies',              duration:45, difficulty:'medium'},
-  {id:'mon-06', domain:'monitoring',name:'Implement Azure Site Recovery (ASR) for VMs',           duration:60, difficulty:'hard'},
-  {id:'mon-07', domain:'monitoring',name:'Configure diagnostic settings and resource logs',        duration:20, difficulty:'easy'},
-  {id:'mon-08', domain:'monitoring',name:'Use Azure Advisor and implement cost optimisation',      duration:20, difficulty:'easy'},
+  // Identity, Governance & Monitoring
+  {id:'iden-01',domain:'identity',     name:'Design a monitoring and logging solution for a hybrid environment',                 duration:40, difficulty:'medium'},
+  {id:'iden-02',domain:'identity',     name:'Design an authentication solution using Entra ID and Conditional Access',          duration:35, difficulty:'medium'},
+  {id:'iden-03',domain:'identity',     name:'Recommend an RBAC structure across management groups and subscriptions',           duration:30, difficulty:'medium'},
+  {id:'iden-04',domain:'identity',     name:'Design an identity governance solution with PIM and access reviews',               duration:40, difficulty:'hard'},
+  {id:'iden-05',domain:'identity',     name:'Design a secrets management solution using Azure Key Vault',                       duration:30, difficulty:'medium'},
+  {id:'iden-06',domain:'identity',     name:'Design a compliance solution using Azure Policy and Blueprints',                   duration:35, difficulty:'medium'},
+  {id:'iden-07',domain:'identity',     name:'Recommend a log routing architecture for security and operations',                 duration:30, difficulty:'hard'},
+  {id:'iden-08',domain:'identity',     name:'Design a solution for external identity and B2B collaboration',                    duration:25, difficulty:'easy'},
+  // Data Storage Solutions
+  {id:'stor-01',domain:'storage',      name:'Choose between Azure SQL Database, SQL Managed Instance, and SQL on VM',          duration:35, difficulty:'medium'},
+  {id:'stor-02',domain:'storage',      name:'Design a Cosmos DB solution: API, consistency level, and partition strategy',     duration:45, difficulty:'hard'},
+  {id:'stor-03',domain:'storage',      name:'Recommend a database tier and scaling solution for variable workloads',           duration:30, difficulty:'medium'},
+  {id:'stor-04',domain:'storage',      name:'Design a data lake solution using Azure Data Lake Storage Gen2',                  duration:35, difficulty:'medium'},
+  {id:'stor-05',domain:'storage',      name:'Design a data integration solution using Azure Data Factory',                     duration:40, difficulty:'hard'},
+  {id:'stor-06',domain:'storage',      name:'Recommend a solution for data analysis: Synapse vs Databricks vs Stream Analytics', duration:40, difficulty:'hard'},
+  {id:'stor-07',domain:'storage',      name:'Design a storage solution balancing cost, performance, and redundancy',           duration:30, difficulty:'medium'},
+  {id:'stor-08',domain:'storage',      name:'Design a data protection solution: encryption, soft delete, versioning',          duration:25, difficulty:'easy'},
+  // Business Continuity
+  {id:'cont-01',domain:'continuity',   name:'Define RPO and RTO requirements and map to the right Azure services',             duration:30, difficulty:'medium'},
+  {id:'cont-02',domain:'continuity',   name:'Design a backup strategy for VMs, databases, and file shares',                   duration:40, difficulty:'medium'},
+  {id:'cont-03',domain:'continuity',   name:'Design a disaster recovery solution using Azure Site Recovery',                   duration:45, difficulty:'hard'},
+  {id:'cont-04',domain:'continuity',   name:'Recommend a high availability architecture using Availability Zones',             duration:35, difficulty:'medium'},
+  {id:'cont-05',domain:'continuity',   name:'Design HA for SQL Database: geo-replication vs failover groups',                 duration:35, difficulty:'hard'},
+  {id:'cont-06',domain:'continuity',   name:'Design a multi-region active-active vs active-passive architecture',             duration:45, difficulty:'hard'},
+  {id:'cont-07',domain:'continuity',   name:'Recommend a backup solution for Azure Database for PostgreSQL',                  duration:25, difficulty:'easy'},
+  {id:'cont-08',domain:'continuity',   name:'Design a business continuity plan for a hybrid workload',                        duration:40, difficulty:'hard'},
+  // Infrastructure Solutions
+  {id:'infr-01',domain:'infrastructure',name:'Choose between VMs, containers, and serverless for a given workload',           duration:35, difficulty:'medium'},
+  {id:'infr-02',domain:'infrastructure',name:'Design an AKS cluster: node pools, networking, scaling, and security',          duration:50, difficulty:'hard'},
+  {id:'infr-03',domain:'infrastructure',name:'Design a serverless architecture with Azure Functions and Event Grid',           duration:40, difficulty:'medium'},
+  {id:'infr-04',domain:'infrastructure',name:'Recommend a messaging solution: Service Bus vs Event Hub vs Storage Queue',     duration:30, difficulty:'medium'},
+  {id:'infr-05',domain:'infrastructure',name:'Design an API Management solution with backends, policies, and caching',        duration:40, difficulty:'hard'},
+  {id:'infr-06',domain:'infrastructure',name:'Design a CI/CD deployment pipeline using Azure DevOps and Bicep',               duration:40, difficulty:'medium'},
+  {id:'infr-07',domain:'infrastructure',name:'Evaluate and design a migration using the Cloud Adoption Framework',            duration:35, difficulty:'medium'},
+  {id:'infr-08',domain:'infrastructure',name:'Recommend a database migration solution using Azure Migrate and DMS',           duration:35, difficulty:'medium'},
+  {id:'infr-09',domain:'infrastructure',name:'Design a hub-and-spoke network topology with shared services',                  duration:45, difficulty:'hard'},
+  {id:'infr-10',domain:'infrastructure',name:'Choose between VPN Gateway and ExpressRoute for hybrid connectivity',           duration:30, difficulty:'medium'},
+  {id:'infr-11',domain:'infrastructure',name:'Design a load balancing solution: ALB vs App Gateway vs Front Door vs Traffic Manager', duration:35, difficulty:'hard'},
+  {id:'infr-12',domain:'infrastructure',name:'Recommend a caching strategy using Redis Cache and Azure CDN',                 duration:25, difficulty:'easy'},
+  {id:'infr-13',domain:'infrastructure',name:'Design a network security architecture: NSGs, Azure Firewall, and DDoS Protection', duration:45, difficulty:'hard'},
+  {id:'infr-14',domain:'infrastructure',name:'Design a compute solution for batch processing using Azure Batch and VMSS',    duration:35, difficulty:'medium'},
+  {id:'infr-15',domain:'infrastructure',name:'Design an event-driven architecture for real-time processing',                 duration:40, difficulty:'hard'},
+  {id:'infr-16',domain:'infrastructure',name:'Recommend a solution for migrating unstructured data to Azure',                duration:25, difficulty:'easy'},
 ];
 
 
-// Official AZ-104 study guide skills (April 2026)
-// https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-104
+// Official AZ-305 study guide skills (April 2026)
+// https://learn.microsoft.com/en-us/credentials/certifications/resources/study-guides/az-305
 var DOMAIN_SKILLS = {
   identity: [
-    'Create and manage Microsoft Entra users and groups',
-    'Manage user and group properties and licenses',
-    'Manage external users and configure SSPR',
-    'Manage built-in Azure roles and RBAC',
-    'Assign roles at different scopes and interpret access assignments',
-    'Implement and manage Azure Policy',
-    'Configure resource locks (CanNotDelete and ReadOnly)',
-    'Apply and manage tags on resources',
-    'Manage resource groups and subscriptions',
-    'Configure management groups',
-    'Manage costs using alerts, budgets, and Azure Advisor',
+    'Recommend a logging solution and a solution for routing logs',
+    'Recommend a monitoring solution using Azure Monitor, Log Analytics, and Insights',
+    'Recommend an authentication solution (Entra ID, MFA, Conditional Access)',
+    'Recommend an identity management solution',
+    'Recommend a solution for authorizing access to Azure resources using RBAC',
+    'Recommend a solution for authorizing access to on-premises resources',
+    'Recommend a solution to manage secrets, certificates, and keys using Key Vault',
+    'Recommend a structure for management groups, subscriptions, and resource groups',
+    'Recommend a strategy for resource tagging',
+    'Recommend a solution for managing compliance using Azure Policy',
+    'Recommend a solution for identity governance using PIM and access reviews',
   ],
   storage: [
-    'Configure Azure Storage firewalls and virtual networks',
-    'Create and use SAS tokens and stored access policies',
-    'Manage access keys and identity-based access for Azure Files',
-    'Create and configure storage accounts',
-    'Configure Azure Storage redundancy (LRS, ZRS, GRS, GZRS)',
-    'Configure object replication and storage account encryption',
-    'Use Azure Storage Explorer and AzCopy',
-    'Create and configure file shares in Azure Files',
-    'Create and configure containers in Azure Blob Storage',
-    'Configure storage tiers (Hot, Cool, Cold, Archive)',
-    'Configure soft delete, snapshots, lifecycle management, and blob versioning',
+    'Recommend a solution for storing relational data (SQL Database, SQL Managed Instance, PostgreSQL)',
+    'Recommend a database service tier and compute tier based on requirements',
+    'Recommend a solution for database scalability (elastic pools, hyperscale, read replicas)',
+    'Recommend a solution for data protection (encryption, backups, geo-redundancy)',
+    'Recommend a solution for storing semi-structured data (Cosmos DB, Table Storage)',
+    'Recommend a solution for storing unstructured data (Blob Storage, ADLS Gen2)',
+    'Recommend a data storage solution balancing features, performance, and costs',
+    'Recommend a solution for data protection and durability',
+    'Recommend a solution for data integration (Data Factory, Synapse, Event Hubs)',
+    'Recommend a solution for data analysis (Synapse Analytics, Databricks, Stream Analytics)',
   ],
-  compute: [
-    'Interpret and modify ARM templates and Bicep files',
-    'Deploy resources using ARM templates or Bicep',
-    'Create and configure virtual machines',
-    'Configure encryption at host for Azure VMs',
-    'Move VMs between resource groups, subscriptions, and regions',
-    'Manage VM sizes and disks',
-    'Deploy VMs to availability zones and availability sets',
-    'Deploy and configure Azure Virtual Machine Scale Sets',
-    'Create and manage Azure Container Registry',
-    'Provision containers using Azure Container Instances and Container Apps',
-    'Manage scaling for Container Instances and Container Apps',
-    'Provision and configure App Service plans',
-    'Configure scaling, TLS, custom DNS, backup, networking, and deployment slots for App Service',
+  continuity: [
+    'Recommend a recovery solution meeting RPO and RTO objectives for Azure and hybrid workloads',
+    'Recommend a backup and recovery solution for compute (Azure Backup, snapshots, ASR)',
+    'Recommend a backup and recovery solution for databases (geo-restore, PITR, long-term retention)',
+    'Recommend a backup and recovery solution for unstructured data (blob versioning, soft delete)',
+    'Recommend a high availability solution for compute (Availability Zones, Scale Sets, ASR)',
+    'Recommend a high availability solution for relational data (Always On, geo-replication)',
+    'Recommend a high availability solution for semi-structured and unstructured data',
+    'Design for SLA targets: 99.9% vs 99.95% vs 99.99% across tiers and configurations',
   ],
-  networking: [
-    'Create and configure virtual networks and subnets',
-    'Create and configure virtual network peering',
-    'Configure public IP addresses and user-defined routes',
-    'Troubleshoot network connectivity',
-    'Create and configure NSGs and application security groups',
-    'Evaluate effective security rules in NSGs',
-    'Implement Azure Bastion',
-    'Configure service endpoints and private endpoints for Azure PaaS',
-    'Configure Azure DNS',
-    'Configure internal and public load balancers',
-    'Troubleshoot load balancing',
-  ],
-  monitoring: [
-    'Interpret metrics in Azure Monitor',
-    'Configure log settings and query logs in Azure Monitor',
-    'Set up alert rules, action groups, and alert processing rules',
-    'Configure and interpret monitoring of VMs, storage, and networks using Azure Monitor Insights',
-    'Use Azure Network Watcher and Connection Monitor',
-    'Create Recovery Services vault and Azure Backup vault',
-    'Create and configure backup policies',
-    'Perform backup and restore operations using Azure Backup',
-    'Configure Azure Site Recovery for Azure resources',
-    'Perform a failover to a secondary region using Site Recovery',
-    'Configure and interpret backup reports and alerts',
+  infrastructure: [
+    'Specify components of a compute solution based on workload requirements',
+    'Recommend a virtual machine-based solution (VM size, availability, disk, extensions)',
+    'Recommend a container-based solution (AKS, ACI, Container Apps)',
+    'Recommend a serverless-based solution (Functions, Logic Apps, Event Grid)',
+    'Recommend a compute solution for batch processing (Batch, VMSS)',
+    'Recommend a messaging architecture (Service Bus, Event Hub, Storage Queues)',
+    'Recommend an event-driven architecture (Event Grid, Event Hub, Functions)',
+    'Recommend a solution for API integration (API Management, APIM policies)',
+    'Recommend a caching solution (Redis Cache, CDN, Front Door)',
+    'Recommend an automated deployment solution (Bicep, ARM, DevOps, GitHub Actions)',
+    'Evaluate migration using the Microsoft Cloud Adoption Framework',
+    'Recommend a solution for migrating workloads to IaaS and PaaS',
+    'Recommend a solution for migrating databases (DMS, Azure Migrate)',
+    'Recommend a connectivity solution connecting Azure to internet (NAT Gateway, Public IP, Front Door)',
+    'Recommend a connectivity solution connecting Azure to on-premises (VPN Gateway, ExpressRoute)',
+    'Recommend a solution to optimize network performance and security',
+    'Recommend a load-balancing and routing solution (Load Balancer, App Gateway, Front Door, Traffic Manager)',
   ],
 };
 
@@ -1152,8 +1125,8 @@ function renderHome() {
       '</div>' +
     '</div>' +
     '<div class="card-sm mb-3" style="border-color:rgba(0,120,212,0.3);background:rgba(0,120,212,0.05);">' +
-      '<div class="text-sm fw-600" style="color:var(--primary-lt);margin-bottom:4px;">&#127919; Question types included</div>' +
-      '<div class="text-sm text-2">Single-answer &middot; Multi-select (Select 2/3) &middot; Drag &amp; Drop &mdash; just like the real AZ-104 exam.</div>' +
+      '<div class="text-sm fw-600" style="color:var(--primary-lt);margin-bottom:4px;">&#127959; AZ-305 Architect mindset</div>' +
+      '<div class="text-sm text-2">All questions are scenario-based design decisions &mdash; "recommend a solution", "which architecture best meets requirements?". Single-answer &middot; Multi-select &middot; Drag &amp; Drop.</div>' +
     '</div>' +
     errBox +
     '<div class="flex items-center gap-3">' +
@@ -1263,7 +1236,7 @@ function renderLabs() {
           '<div class="text-sm fw-600" style="color:var(--primary-lt);margin-bottom:3px;">&#9729;&#65039; Need a real Azure environment?</div>' +
           '<div class="text-sm text-2">Use Microsoft Learn\'s free sandbox to practice these labs on real Azure resources.</div>' +
         '</div>' +
-        '<a href="https://learn.microsoft.com/en-us/training/browse/?products=azure&roles=administrator" target="_blank" class="ms-learn-btn" style="text-decoration:none;">Open MS Learn &rarr;</a>' +
+        '<a href="https://learn.microsoft.com/en-us/training/browse/?products=azure&roles=solution-architect" target="_blank" class="ms-learn-btn" style="text-decoration:none;">Open MS Learn &rarr;</a>' +
       '</div>' +
     '</div>';
 
@@ -1340,7 +1313,7 @@ function renderLabDetail() {
         '<div class="text-sm text-2" style="max-width:400px;margin:0 auto 20px;">Claude will generate a complete step-by-step lab guide with portal instructions, Azure CLI commands, validation checks, and cleanup steps.</div>' +
         (!S.apiKey ?
           '<div class="err-box" style="max-width:400px;margin:0 auto 16px;">API key required. Set it on the Home screen.</div>' :
-          '<button class="btn btn-primary" id="gen-lab-btn" style="font-size:14px;padding:12px 28px;">&#9889; Generate Lab Guide</button>'
+          '<button class="btn btn-primary" id="gen-lab-btn" style="font-size:14px;padding:12px 28px;">&#9889; Generate Design Guide</button>'
         ) +
       '</div>';
 
@@ -1351,7 +1324,7 @@ function renderLabDetail() {
         '<div class="checklist-item"><span class="warn-icon">&#9432;</span><span>Azure CLI installed locally, or use Azure Cloud Shell in the portal</span></div>' +
         '<div class="checklist-item"><span class="warn-icon">&#9432;</span><span>Contributor or Owner role on the subscription</span></div>' +
       '</div>' +
-      '<div class="info-box" style="margin-top:0;">&#9729;&#65039; <strong>Free practice:</strong> Use <a href="https://learn.microsoft.com/en-us/training/browse/?products=azure&roles=administrator" target="_blank" style="color:var(--primary-lt);">Microsoft Learn free sandboxes</a> &mdash; no Azure subscription needed.</div>';
+      '<div class="info-box" style="margin-top:0;">&#9729;&#65039; <strong>Free practice:</strong> Use <a href="https://learn.microsoft.com/en-us/training/browse/?products=azure&roles=solution-architect" target="_blank" style="color:var(--primary-lt);">Microsoft Learn free sandboxes</a> &mdash; no Azure subscription needed.</div>';
 
     return topBar + header + generateCard + prereqList;
   }
@@ -1466,7 +1439,7 @@ function renderParsedLab(p) {
 
   // MS Learn link
   html += '<div style="margin-top:8px;">' +
-    '<a href="https://learn.microsoft.com/en-us/training/browse/?products=azure&roles=administrator" ' +
+    '<a href="https://learn.microsoft.com/en-us/training/browse/?products=azure&roles=solution-architect" ' +
     'target="_blank" class="ms-learn-btn" style="text-decoration:none;">' +
     '&#9729;&#65039; Practice on Microsoft Learn free sandbox &rarr;</a>' +
   '</div>';
@@ -1520,21 +1493,27 @@ function generateLab() {
   if (genBtn) { genBtn.disabled = true; genBtn.innerHTML = 'Generating...'; }
 
   var dom = DOMAINS.find(function(d){return d.id===lab.domain;}) || {full:lab.domain};
-  var apiPrompt =
-    'You are a senior Microsoft Azure instructor writing a hands-on AZ-104 lab guide.\n' +
-    'Lab: "' + lab.name + '" (Domain: ' + dom.full + ', Difficulty: ' + lab.difficulty + ', ' + lab.duration + ' min)\n\n' +
-    'Return ONLY a raw JSON object (no markdown, no extra text) with this structure:\n' +
+  var apiPrompt = 'You are a senior Microsoft Azure Solutions Architect writing a design scenario guide for AZ-305 candidates.' +
+    ' Scenario: "' + lab.name + '" (Domain: ' + dom.full + ', Difficulty: ' + lab.difficulty + ', ' + lab.duration + ' min).' +
+    ' Return ONLY a raw JSON object (no markdown) with this structure:' +
     '{"objective":"string","scenario":"string","prerequisites":["string"],' +
     '"steps":[{"title":"string","description":"string","portal":["string"],"cli":"string or null","note":"string or null"}],' +
-    '"validation":["string"],"cleanup":["string"],"keyPoints":["string"]}\n\n' +
-    'Rules:\n' +
-    '- Exactly 5 steps (not more) to keep the response concise\n' +
-    '- Step 1 must create a resource group named "rg-az104-lab"\n' +
-    '- Portal array: 3-4 sub-steps each, enough detail to follow without screenshots\n' +
-    '- CLI: real working az commands; use newline between multiple commands\n' +
-    '- Use realistic resource names (rg-az104-lab, vm-web-01, vnet-prod-eastus, etc.)\n' +
-    '- 2 validation checks, 1-2 cleanup steps (az group delete), 4 key concepts\n' +
-    '- Keep each string under 200 characters to avoid truncation';
+    '"validation":["string"],"cleanup":["string"],"keyPoints":["string"]}' +
+    ' Rules:' +
+    ' - objective: one sentence describing the design decision or recommendation to make' +
+    ' - scenario: 2-3 sentence real-world business requirement (company name, specific requirement, constraints)' +
+    ' - steps: exactly 5 steps walking through the design decision process:' +
+    '   Step 1: Understand the requirements (list key business and technical constraints),' +
+    '   Step 2: Evaluate candidate solutions (compare 2-3 options with trade-offs),' +
+    '   Step 3: Recommended architecture (explain the winning solution and why),' +
+    '   Step 4: Azure Well-Architected Framework alignment (reliability, security, cost, operational excellence, performance),' +
+    '   Step 5: Implementation considerations (key configs, CLI commands, gotchas)' +
+    ' - portal: decision criteria and portal navigation for this step' +
+    ' - cli: relevant az commands to implement the recommendation (or null if not applicable)' +
+    ' - validation: how to verify the design meets the requirements' +
+    ' - cleanup: az commands to remove demo resources' +
+    ' - keyPoints: 4 exam-relevant concepts this scenario tests' +
+    ' - Keep all strings under 200 characters';
 
   fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -1581,7 +1560,7 @@ function renderLoading() {
   return '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px;gap:18px;">' +
     '<div class="spinner"></div>' +
     '<div style="font-size:16px;font-weight:700;">Generating ' + S.settings.count + ' questions...</div>' +
-    '<div class="text-sm text-2">Claude is crafting exam-grade AZ-104 questions including multi-select and drag &amp; drop.</div>' +
+    '<div class="text-sm text-2">Claude is crafting architect-level AZ-305 design scenarios including multi-select and drag &amp; drop.</div>' +
     '</div>';
 }
 
@@ -1916,10 +1895,10 @@ function startQuiz(){
     var skills = DOMAIN_SKILLS[d.id] || [];
     return d.name + ': ' + skills.slice(0,6).join('; ');
   }).join(' | ');
-  var apiPrompt='You are a senior Microsoft Azure instructor writing AZ-104 exam practice questions aligned to the OFFICIAL Microsoft study guide (April 2026).\n'+
+  var apiPrompt='You are a senior Microsoft Azure Solutions Architect writing AZ-305 exam practice questions aligned to the OFFICIAL Microsoft study guide (April 2026).\n'+
     'Generate exactly '+n+' questions: '+nSingle+' single-answer, '+nMulti+' multi-select, '+nDd+' drag-and-drop.\n'+
     'Domains: '+domainNames+'.\nDifficulty: '+S.settings.difficulty+' - '+(diffGuide[S.settings.difficulty]||diffGuide.medium)+'\n\n'+
-    'TYPES:\n1. type:"single" - 4 options, correct is a number 0-3.\n2. type:"multi" - 5 options, selectCount correct (2 or 3), correct is an array. Say "Select TWO/THREE" in question.\n3. type:"drag_drop" - 5 options, selectCount correct (2 or 3), correct is array. Say "Select TWO/THREE that apply".\n\n'+
+    'TYPES:\n1. type:"single" - 4 options, correct is a number 0-3. Use architect design scenarios.\n2. type:"multi" - 5 options, selectCount correct (2 or 3), correct is an array. Say "Select TWO/THREE". Test which combination of services meets the requirements.\n3. type:"drag_drop" - 5 options, selectCount correct (2 or 3), correct is array. Say "Select TWO/THREE that apply". Match requirements to solutions.\n\n'+
     'Rules: Plausible distractors. Explain why correct is right and key distractor wrong. Include reference topic. Spread across all domains.\n\n'+
     'Respond ONLY with raw JSON array:\n[{"type":"single","domain":"'+exD+'","question":"...","options":["A","B","C","D"],"correct":0,"explanation":"...","reference":"..."},'+
     '{"type":"multi","domain":"'+exD+'","question":"Select TWO...","selectCount":2,"options":["A","B","C","D","E"],"correct":[0,2],"explanation":"...","reference":"..."},'+
@@ -2012,7 +1991,7 @@ function printReport() {
     '@media print{body{padding:20px;}}' +
     '</style></head><body>' +
     '<div style="display:flex;justify-content:space-between;align-items:flex-start;"><div>' +
-    '<h1>AZ-104 Practice Exam Report</h1>' +
+    '<h1>AZ-305 Practice Exam Report</h1>' +
     '<div style="font-size:13px;color:#666;">' + new Date().toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'}) + '</div>' +
     '</div><div style="text-align:right;font-size:12px;color:#999;">Microsoft Azure Administrator</div></div>' +
     '<div class="score">' + score + '%</div>' +
@@ -2144,7 +2123,7 @@ function generateCheatSheet() {
   var btn = document.getElementById('gen-cs-btn');
   if (btn) { btn.disabled=true; btn.innerHTML='Generating...'; }
 
-  var apiPrompt = 'You are a senior Microsoft Azure instructor writing a cheat sheet for AZ-104 candidates. Domain: ' + dom.full + '. Official exam skills to cover: ' + skills + '. Return ONLY a raw JSON object (no markdown) with this structure: {"title":"string","sections":[{"title":"string","rows":[{"term":"string","def":"string"}]}],"commands":[{"cmd":"string","desc":"string"}],"mnemonics":["string"],"gotchas":["string"]} Rules: 3-5 sections covering official skills (e.g. Key Services, Limits and Tiers, Comparison Tables). Each section: 4-8 rows of term/definition pairs, concise and exam-focused. 5-8 real az CLI commands that appear in the exam. 3-5 mnemonics or memorable analogies for hard-to-remember concepts. 4-6 gotchas: tricky exam traps, common misconceptions, or surprising behaviours. Keep all strings under 150 characters. Only include content mapping directly to the official study guide skills above.';
+  var apiPrompt = 'You are a senior Microsoft Azure Solutions Architect writing a cheat sheet for AZ-305 candidates. Domain: ' + dom.full + '. Official exam skills to cover: ' + skills + '. Return ONLY a raw JSON object (no markdown) with this structure: {"title":"string","sections":[{"title":"string","rows":[{"term":"string","def":"string"}]}],"commands":[{"cmd":"string","desc":"string"}],"mnemonics":["string"],"gotchas":["string"]} Rules: 3-5 sections covering official skills (e.g. Key Services, Limits and Tiers, Comparison Tables). Each section: 4-8 rows of term/definition pairs, concise and exam-focused. 5-8 real az CLI commands that appear in the exam. 3-5 mnemonics or memorable analogies for hard-to-remember concepts. 4-6 gotchas: tricky exam traps, common misconceptions, or surprising behaviours. Keep all strings under 150 characters. Only include content mapping directly to the official study guide skills above.';
   fetch('https://api.anthropic.com/v1/messages', {
     method:'POST',
     headers:{'Content-Type':'application/json','x-api-key':S.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
@@ -2220,6 +2199,7 @@ function printCheatSheet(domId) {
 // BOOT
 // ============================================================
 render();
+
 </script>
 
 
